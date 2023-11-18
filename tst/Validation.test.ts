@@ -89,6 +89,11 @@ describe("validateShape", () => {
 		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, fruit => fruit.name.length > 4))).not.toThrow()
 		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, fruit => fruit.name.length > 5))).toThrow(ShapeValidationError)
 	})
+	test("optional", () => {
+		expect(() => validateShape(undefined, s.optional(s.string()))).not.toThrow()
+		expect(() => validateShape("hello", s.optional(s.string()))).not.toThrow()
+		expect(() => validateShape(10, s.optional(s.string()))).toThrow(ShapeValidationError)
+	})
 	test("ShapeValidationError path", () => {
 		expect(getErrorPath(() => validateShape(5, s.string()))).toStrictEqual([])
 		expect(getErrorPath(() => validateShape(true, s.number()))).toStrictEqual([])

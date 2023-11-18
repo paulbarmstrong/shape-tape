@@ -87,6 +87,9 @@ export type ShapeToType<S extends Shape, Depth extends any[] = D0> =
 			T extends "class" ? D extends AnyClassConstructor ? (
 				InstanceType<D>
 			) : never :
+			T extends "optional" ? D extends Shape ? (
+				D | undefined
+			) : never :
 			never
 		) : (
 			never

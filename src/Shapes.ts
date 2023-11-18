@@ -24,5 +24,8 @@ export const s = {
 	},
 	class: function<T extends AnyClassConstructor>(clazz: T, predicate?: (instance: InstanceType<T>) => boolean) {
 		return { type: "class" as "class", data: clazz, predicate: predicate }
+	},
+	optional: function<T extends Shape>(shape: T) {
+		return { type: "union" as "union", data: [shape, { type: "literal" as "literal", data: undefined }] }
 	}
 }
