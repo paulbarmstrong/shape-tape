@@ -35,6 +35,14 @@ describe("validateShape", () => {
 		;["apple", "", null, undefined, {}, {a: "b"}, [], [5, "c"], new Map(), 5].forEach((invalidEntity: any) => {
 			expect(() => validateShape(invalidEntity, s.literal("banana"))).toThrow(ShapeValidationError)
 		})
+		expect(() => validateShape(5, s.literal(5))).not.toThrow()
+		expect(() => validateShape(6, s.literal(5))).toThrow()
+		expect(() => validateShape(true, s.literal(true))).not.toThrow()
+		expect(() => validateShape(false, s.literal(true))).toThrow()
+		expect(() => validateShape(undefined, s.literal(undefined))).not.toThrow()
+		expect(() => validateShape(undefined, s.literal(null))).toThrow()
+		expect(() => validateShape(null, s.literal(null))).not.toThrow()
+		expect(() => validateShape(null, s.literal(undefined))).toThrow()
 	})
 	test("dict", () => {
 		expect(() => validateShape({}, s.dict({}))).not.toThrow()

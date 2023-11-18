@@ -1,4 +1,5 @@
 export type AnyClassConstructor<T = any> = new (...args: any[]) => T
+export type Literal = string | number | boolean | null | undefined
 
 type StringShape = {
 	type: "string",
@@ -20,7 +21,7 @@ type UndefinedShape = {
 
 type LiteralShape = {
 	type: "literal",
-	data: string
+	data: Literal
 }
 
 type DictShape = {
@@ -71,7 +72,9 @@ export type ShapeToType<S extends Shape, Depth extends any[] = D0> =
 		T extends "boolean" ? boolean :
 		T extends "undefined" ? undefined :
 		S extends { type: infer T, data: infer D } ? (
-			T extends "literal" ? D :
+			T extends "literal" ? D extends Literal ? (
+				D
+			) : never :
 			T extends "dict" ? D extends { [key: string]: infer U extends Shape } ? (
 				{ [K in keyof D]: ShapeToType<D[K], IncrDepth<Depth>> }
 			) : never :

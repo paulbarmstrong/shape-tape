@@ -1,4 +1,4 @@
-import { AnyClassConstructor, Shape } from "./Types"
+import { AnyClassConstructor, Literal, Shape } from "./Types"
 
 export const s = {
 	string: function(predicate?: (entity: string) => boolean) {
@@ -10,11 +10,8 @@ export const s = {
 	boolean: function() {
 		return { type: "boolean" as "boolean" }
 	},
-	undefined: function() {
-		return { type: "undefined" as "undefined" }
-	},
-	literal: function<T extends string>(str: T) {
-		return { type: "literal" as "literal", data: str }
+	literal: function<T extends Literal>(literal: T) {
+		return { type: "literal" as "literal", data: literal }
 	},
 	dict: function<T extends { [key: string]: Shape }>(dict: T, predicate?: (entity: { [key: string]: any }) => boolean) {
 		return { type: "dict" as "dict", data: dict, predicate: predicate }
