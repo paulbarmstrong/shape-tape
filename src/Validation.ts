@@ -11,9 +11,9 @@ export class ShapeValidationError extends Error {
 
 export function getErrorMessage(path: Array<string | number>): string {
 	return path.length > 0 ? (
-		`Invalid shape for parameter ${path.map((entry, index) => index === 0 && typeof entry !== "number" ? JSON.stringify(entry) : `[${JSON.stringify(entry)}]`).join("")}.`
+		`Invalid value for parameter ${path.map((entry, index) => index === 0 && typeof entry !== "number" ? JSON.stringify(entry) : `[${JSON.stringify(entry)}]`).join("")}.`
 	) : (
-		"Invalid parameter."
+		"Invalid parameter value."
 	)
 }
 
@@ -40,7 +40,7 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 		if (typeof entity !== "object" || entity === null) throw new ShapeValidationError(path)
 		Object.keys(entity).forEach(k1 => {
 			if (!Object.keys(shape.data).find(k2 => k1 === k2)) {
-				throw new ShapeValidationError([...path, k1])
+				throw new ShapeValidationError(path)
 			}
 		})
 		Object.keys(shape.data).forEach(parameterKey => {
