@@ -1,0 +1,22 @@
+{
+	"name": "shape-tape",
+	"version": "1.0.0",
+	"main": "dist/src/index",
+	"typings": "dist/src/index",
+	"scripts": {
+		"clean": "rm -rf ./dist",
+		"build": "tsc",
+		"test": "npx jest"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/paulbarmstrong/shape-tape.git"
+	},
+	"author": "Paul B. Armstrong",
+	"license": "MIT",
+	"description": "TypeScript library to help with validation and typing of JSON structures",
+	"devDependencies": {
+		"@types/jest": "^29.5.8",
+		"ts-jest": "^29.1.1"
+	}
+}
