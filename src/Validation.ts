@@ -3,15 +3,18 @@ import { Shape, ShapeToType } from "./Types"
 export class ShapeValidationError extends Error {
 	path: Array<string | number>
 	constructor(path: Array<string | number>) {
-		const message = path.length > 0 ? (
-			`Invalid shape for parameter ${path.map((entry, index) => index === 0 ? entry : `[${JSON.stringify(entry)}]`).join(".")}.`
-		) : (
-			"Invalid parameter."
-		)
-		super(message)
+		super(getErrorMessage(path))
 		this.name = "ShapeValidationError"
 		this.path = path
 	}
+}
+
+export function getErrorMessage(path: Array<string | number>): string {
+	return path.length > 0 ? (
+		`Invalid shape for parameter ${path.map((entry, index) => index === 0 && typeof entry !== "number" ? JSON.stringify(entry) : `[${JSON.stringify(entry)}]`).join("")}.`
+	) : (
+		"Invalid parameter."
+	)
 }
 
 export function validateShape<T extends Shape>(entity: any, shape: T, path: Array<string | number> = []): ShapeToType<T> {

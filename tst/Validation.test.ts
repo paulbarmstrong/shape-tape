@@ -64,3 +64,13 @@ describe("validateShape", () => {
 		})
 	})
 })
+
+describe("getErrorMessage", () => {
+	expect(new ShapeValidationError([]).message).toStrictEqual("Invalid parameter.")
+	expect(new ShapeValidationError(["name"]).message).toStrictEqual("Invalid shape for parameter \"name\".")
+	expect(new ShapeValidationError(["config", "frequency"]).message)
+		.toStrictEqual("Invalid shape for parameter \"config\"[\"frequency\"].")
+	expect(new ShapeValidationError(["fruit", 0, "id"]).message).toStrictEqual("Invalid shape for parameter \"fruit\"[0][\"id\"].")
+	expect(new ShapeValidationError([0]).message).toStrictEqual("Invalid shape for parameter [0].")
+	expect(new ShapeValidationError([0, "id"]).message).toStrictEqual("Invalid shape for parameter [0][\"id\"].")
+})
