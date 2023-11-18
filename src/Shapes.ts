@@ -17,7 +17,7 @@ export const s = {
 	union: function<T extends Array<Shape>>(...subShapes: T) {
 		return { type: "union" as "union", data: subShapes }
 	},
-	class: function<T extends AnyClassConstructor>(clazz: T) {
-		return { type: "class" as "class", data: clazz }
+	class: function<T extends AnyClassConstructor>(clazz: T, predicate?: (instance: InstanceType<T>) => boolean) {
+		return { type: "class" as "class", data: clazz, predicate: predicate }
 	}
 }

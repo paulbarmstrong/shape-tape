@@ -44,7 +44,8 @@ type UnionShape = {
 
 type ClassShape = {
 	type: "class",
-	data: AnyClassConstructor
+	data: AnyClassConstructor,
+	predicate?: (entity: AnyClassConstructor) => boolean
 }
 
 export type Shape = StringShape | NumberShape | BooleanShape | UndefinedShape | LiteralShape | DictShape
