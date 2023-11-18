@@ -1,4 +1,4 @@
-import { ShapeValidationError, s, validateShape } from "../src"
+import { Shape, ShapeToType, ShapeValidationError, s, validateShape } from "../src"
 
 describe("validateShape", () => {
 	test("string", () => {
@@ -62,6 +62,16 @@ describe("validateShape", () => {
 		].forEach((invalidEntity: any) => {
 			expect(() => validateShape(invalidEntity, fruitShape)).toThrow(ShapeValidationError)
 		})
+	})
+	test("class", () => {
+		class Fruit {
+			name: string
+			constructor(name: string) {
+				this.name = name
+			}
+		}
+		expect(() => validateShape([new Fruit("apple"), new Fruit("banana")] as any, s.array(s.class(Fruit)))).not.toThrow()
+		expect(() => validateShape([new Fruit("apple"), "banana" as any], s.array(s.class(Fruit)))).toThrow(ShapeValidationError)
 	})
 	test("ShapeValidationError path", () => {
 		expect(getErrorPath(() => validateShape(5, s.string))).toStrictEqual([])

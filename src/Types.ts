@@ -1,3 +1,5 @@
+export type AnyClassConstructor<T = any> = new (...args: any[]) => T
+
 type StringShape = {
 	type: "string",
 	predicate?: (value: string) => boolean
@@ -40,8 +42,13 @@ type UnionShape = {
 	data: Array<Shape>
 }
 
+type ClassShape = {
+	type: "class",
+	data: AnyClassConstructor
+}
+
 export type Shape = StringShape | NumberShape | BooleanShape | UndefinedShape | LiteralShape | DictShape
-	| ArrayShape | UnionShape
+	| ArrayShape | UnionShape | ClassShape
 
 type IncrDepth<Depth extends any[]> = [...Depth, never]
 
@@ -72,6 +79,9 @@ export type ShapeToType<S extends Shape, Depth extends any[] = D0> =
 			) : never :
 			T extends "union" ? D extends Array<Shape> ? (
 				ShapeToType<D[number], IncrDepth<Depth>>
+			) : never :
+			T extends "class" ? D extends AnyClassConstructor ? (
+				InstanceType<D>
 			) : never :
 			never
 		) : (

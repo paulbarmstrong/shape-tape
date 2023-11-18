@@ -64,6 +64,8 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 			}
 		})
 		if (matchedSubShapes.length === 0) throw new ShapeValidationError(path)
+	} else if (shape.type === "class") {
+		if (!(entity instanceof shape.data)) throw new ShapeValidationError(path)
 	} else {
 		throw Error("Unmatched shape.")
 	}
