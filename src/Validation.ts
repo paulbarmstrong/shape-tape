@@ -44,14 +44,23 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 			validateShape(entity[parameterKey], (shape.data)[parameterKey], [...path, parameterKey])
 		})
 	} else if (shape.type === "array") {
-		if (isArray(entity)) {
+		if (Array.isArray(entity)) {
 			entity.forEach((element, index) => validateShape(element, shape.data, [...path, index]))
 			if (shape.predicate && !shape.predicate(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
 	} else if (shape.type === "union") {
-		if (!shape.data.includes(entity)) throw new ShapeValidationError(path)
+		const matchedSubShapes = shape.data.filter(subShape => {
+			try {
+				validateShape(entity, subShape, path)
+				return true
+			} catch (error) {
+				if (error instanceof ShapeValidationError) return false
+				else throw error
+			}
+		})
+		if (matchedSubShapes.length === 0) throw new ShapeValidationError(path)
 	} else {
 		throw Error("Unmatched shape.")
 	}
