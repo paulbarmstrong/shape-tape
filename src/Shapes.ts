@@ -1,10 +1,18 @@
 import { AnyClassConstructor, Shape } from "./Types"
 
 export const s = {
-	string: { type: "string" as "string" },
-	number: { type: "number" as "number" },
-	boolean: { type: "boolean" as "boolean" },
-	undefined: { type: "undefined" as "undefined" },
+	string: function(predicate?: (entity: string) => boolean) {
+		return { type: "string" as "string", predicate: predicate }
+	},
+	number: function(predicate?: (entity: number) => boolean) {
+		return { type: "number" as "number", predicate: predicate }
+	},
+	boolean: function() {
+		return { type: "boolean" as "boolean" }
+	},
+	undefined: function() {
+		return { type: "undefined" as "undefined" }
+	},
 	literal: function<T extends string>(str: T) {
 		return { type: "literal" as "literal", data: str }
 	},
