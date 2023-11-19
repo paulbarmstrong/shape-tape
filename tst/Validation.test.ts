@@ -98,6 +98,20 @@ describe("validateShape", () => {
 		expect(() => validateShape("hello", s.optional(s.string()))).not.toThrow()
 		expect(() => validateShape(10, s.optional(s.string()))).toThrow(ShapeValidationError)
 	})
+	test("integer", () => {
+		[-20, 0, 1, 100, 65000].forEach(validEntity => {
+			expect(() => validateShape(validEntity, s.integer())).not.toThrow()
+		})
+		;[true, false, null, undefined, {}, {a: "b"}, [], [5, "b"], new Map(), 5.1, 3/2].forEach((invalidEntity: any) => {
+			expect(() => validateShape(invalidEntity, s.string())).toThrow(ShapeValidationError)
+		})
+		;[0, 1, 2, 3, 4].forEach(validEntity => {
+			expect(() => validateShape(validEntity, s.integer({lowerBound: 0, upperBound: 4}))).not.toThrow()
+		})
+		;[-100, -2, -1, 5, 6, 1000].forEach(invalidEntry => {
+			expect(() => validateShape(invalidEntry, s.integer({lowerBound: 0, upperBound: 4}))).toThrow(ShapeValidationError)
+		})
+	})
 	test("ShapeValidationError path", () => {
 		expect(getErrorPath(() => validateShape(5, s.string()))).toStrictEqual([])
 		expect(getErrorPath(() => validateShape(true, s.number()))).toStrictEqual([])

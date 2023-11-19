@@ -48,5 +48,13 @@ export const s = {
 	},
 	optional: function<T extends Shape>(shape: T) {
 		return { type: "union" as "union", data: [shape, { type: "literal" as "literal", data: undefined }] }
+	},
+	integer: function(options?: { lowerBound?: number, upperBound?: number }) {
+		function predicate(entity: number) {
+			return Number.isInteger(entity) &&
+				(options?.lowerBound === undefined || entity >= options?.lowerBound) &&
+				(options?.upperBound === undefined || entity <= options?.upperBound)
+		}
+		return { type: "number" as "number", predicate: predicate }
 	}
 }
