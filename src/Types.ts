@@ -2,50 +2,50 @@ export type AnyClassConstructor<T = any> = new (...args: any[]) => T
 export type Literal = string | number | boolean | null | undefined
 
 export type StringShape = {
-	type: "string",
-	condition?: (value: string) => boolean
+	_type: "string",
+	_condition?: (value: string) => boolean
 }
 
 export type NumberShape = {
-	type: "number",
-	condition?: (entity: number) => boolean
+	_type: "number",
+	_condition?: (entity: number) => boolean
 }
 
 export type BooleanShape = {
-	type: "boolean"
+	_type: "boolean"
 }
 
 export type LiteralShape = {
-	type: "literal",
-	data: Literal,
+	_type: "literal",
+	_data: Literal,
 	value: Literal
 }
 
 export type DictionaryShape = {
-	type: "dictionary",
-	data: {
+	_type: "dictionary",
+	_data: {
 		[key: string]: Shape
 	}
-	condition?: (entity: { [key: string]: any }) => boolean,
+	_condition?: (entity: { [key: string]: any }) => boolean,
 	keys: Array<string>
 }
 
 export type ArrayShape = {
-	type: "array",
-	data: Shape,
-	condition?: (entity: Array<any>) => boolean
+	_type: "array",
+	_data: Shape,
+	_condition?: (entity: Array<any>) => boolean
 }
 
 export type UnionShape = {
-	type: "union",
-	data: Array<Shape>,
+	_type: "union",
+	_data: Array<Shape>,
 	subShapes: Array<Shape>
 }
 
 export type ClassShape = {
-	type: "class",
-	data: AnyClassConstructor,
-	condition?: (entity: InstanceType<AnyClassConstructor>) => boolean
+	_type: "class",
+	_data: AnyClassConstructor,
+	_condition?: (entity: InstanceType<AnyClassConstructor>) => boolean
 }
 
 export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape | DictionaryShape
@@ -65,12 +65,12 @@ type D8 = IncrDepth<D7>
 
 export type ShapeToType<S extends Shape, Depth extends any[] = D0> =
 	Depth extends D8 ? any :
-	S extends { type: infer T } ? (
+	S extends { _type: infer T } ? (
 		T extends "string" ? string :
 		T extends "number" ? number :
 		T extends "boolean" ? boolean :
 		T extends "undefined" ? undefined :
-		S extends { type: infer T, data: infer D } ? (
+		S extends { _type: infer T, _data: infer D } ? (
 			T extends "literal" ? D extends Literal ? (
 				D
 			) : never :

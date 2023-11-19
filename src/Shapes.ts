@@ -1,4 +1,4 @@
-import { AnyClassConstructor, Literal, Shape, UnionShape } from "./Types"
+import { AnyClassConstructor, Literal, Shape } from "./Types"
 import { getGlobalRegex } from "./Utilities"
 
 export const s = {
@@ -15,7 +15,7 @@ export const s = {
 		) : (
 			undefined
 		)
-		return { type: "string" as "string", condition: condition }
+		return { _type: "string" as "string", _condition: condition }
 	},
 	number: function(options?: { condition?: (entity: number) => boolean, lowerBound?: number, upperBound?: number }) {
 		const condition = options?.condition !== undefined || options?.lowerBound !== undefined || options?.upperBound !== undefined ? (
@@ -27,36 +27,36 @@ export const s = {
 		) : (
 			undefined
 		)
-		return { type: "number" as "number", condition: condition }
+		return { _type: "number" as "number", _condition: condition }
 	},
 	boolean: function() {
-		return { type: "boolean" as "boolean" }
+		return { _type: "boolean" as "boolean" }
 	},
 	literal: function<T extends Literal>(literal: T) {
-		return { type: "literal" as "literal", data: literal, value: literal }
+		return { _type: "literal" as "literal", _data: literal, value: literal }
 	},
 	dictionary: function<T extends { [key: string]: Shape }>(dictionary: T, options?: {
 		condition?: (entity: { [key: string]: any }) => boolean
 	}) {
 		return {
-			type: "dictionary" as "dictionary",
-			data: dictionary,
-			condition: options?.condition,
+			_type: "dictionary" as "dictionary",
+			_data: dictionary,
+			_condition: options?.condition,
 			keys: Object.keys(dictionary)
 		}
 	},
 	array: function<T extends Shape>(shape: T, options?: { condition?: (arr: Array<any>) => boolean }) {
-		return { type: "array" as "array", data: shape, condition: options?.condition }
+		return { _type: "array" as "array", _data: shape, _condition: options?.condition }
 	},
 	union: function<T extends Array<Shape>>(subShapes: T) {
-		return { type: "union" as "union", data: subShapes, subShapes: subShapes }
+		return { _type: "union" as "union", _data: subShapes, subShapes: subShapes }
 	},
 	class: function<T extends AnyClassConstructor>(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean } ) {
-		return { type: "class" as "class", data: clazz, condition: options?.condition }
+		return { _type: "class" as "class", _data: clazz, _condition: options?.condition }
 	},
 	optional: function<T extends Shape>(shape: T) {
-		const data = [shape, { type: "literal" as "literal", data: undefined, value: undefined }]
-		return { type: "union" as "union", data: data, subShapes: data }
+		const data = [shape, { _type: "literal" as "literal", _data: undefined, value: undefined }]
+		return { _type: "union" as "union", _data: data, subShapes: data }
 	},
 	integer: function(options?: { lowerBound?: number, upperBound?: number }) {
 		function condition(entity: number) {
@@ -64,6 +64,6 @@ export const s = {
 				(options?.lowerBound === undefined || entity >= options?.lowerBound) &&
 				(options?.upperBound === undefined || entity <= options?.upperBound)
 		}
-		return { type: "number" as "number", condition: condition }
+		return { _type: "number" as "number", _condition: condition }
 	}
 }
