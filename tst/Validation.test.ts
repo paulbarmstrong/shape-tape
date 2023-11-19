@@ -1,4 +1,4 @@
-import { ShapeValidationError, s, validateShape } from "../src"
+import { ShapeToType, ShapeValidationError, s, validateShape } from "../src"
 
 describe("validateShape", () => {
 	test("string", () => {
@@ -135,6 +135,23 @@ describe("validateShape", () => {
 		})
 		expect(getErrorPath(() => validateShape({users: [{id: 0, name: "banana"}, {id: "a", name: "pear"}]}, usersShape)))
 			.toStrictEqual(["users", 1, "id"])
+	}),
+	test("README example", () => {
+		const resourceShape = s.dict({
+			id: s.string({regex: /[a-zA-Z0-9\-_]{10}/}),
+			name: s.string(),
+			state: s.union(s.literal("pending"), s.literal("active"), s.literal("removed")),
+			createdAt: s.integer()
+		})
+
+		type Resource = ShapeToType<typeof resourceShape>
+
+		const goodData = JSON.parse("{\"id\":\"ui_1zoEJ18\",\"name\":\"New Document\",\"state\":\"active\",\"createdAt\":1700354795466}")
+		const resource: Resource = validateShape(goodData, resourceShape)
+		expect(resource.id).toStrictEqual("ui_1zoEJ18")
+
+		const badData = JSON.parse("{\"id\":\"\",\"name\":\"New Document\",\"state\":\"active\",\"createdAt\":1700354795466}")
+		expect(() => validateShape(badData, resourceShape)).toThrow(ShapeValidationError)
 	})
 })
 
