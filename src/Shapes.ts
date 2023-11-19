@@ -60,7 +60,7 @@ export const s = {
 	}
 }
 
-export function getDictKeys<T extends Shape>(shape: T): Array<string> {
+export function getDictShapeKeys<T extends Shape>(shape: T): Array<string> {
 	if (shape.type === "dict") {
 		return Object.keys(shape.data)
 	} else {
@@ -68,7 +68,7 @@ export function getDictKeys<T extends Shape>(shape: T): Array<string> {
 	}
 }
 
-export function getUnionSubShapes<T extends Shape>(shape: T): Array<Shape> {
+export function getUnionShapeSubShapes<T extends Shape>(shape: T): Array<Shape> {
 	if (shape.type === "union") {
 		return shape.data
 	} else {
@@ -76,7 +76,7 @@ export function getUnionSubShapes<T extends Shape>(shape: T): Array<Shape> {
 	}
 }
 
-export function getLiteralValue<T extends Shape>(shape: T): Literal {
+export function getLiteralShapeValue<T extends Shape>(shape: T): Literal {
 	if (shape.type === "literal") {
 		return shape.data
 	} else {
