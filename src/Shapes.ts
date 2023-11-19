@@ -1,4 +1,4 @@
-import { AnyClassConstructor, DictShape, Literal, LiteralShape, Shape, UnionShape } from "./Types"
+import { AnyClassConstructor, DictionaryShape, Literal, LiteralShape, Shape, UnionShape } from "./Types"
 import { getGlobalRegex } from "./Utilities"
 
 export const s = {
@@ -35,8 +35,10 @@ export const s = {
 	literal: function<T extends Literal>(literal: T) {
 		return { type: "literal" as "literal", data: literal }
 	},
-	dict: function<T extends { [key: string]: Shape }>(dict: T, options?: { condition?: (entity: { [key: string]: any }) => boolean }) {
-		return { type: "dict" as "dict", data: dict, condition: options?.condition }
+	dictionary: function<T extends { [key: string]: Shape }>(dictionary: T, options?: {
+		condition?: (entity: { [key: string]: any }) => boolean
+	}) {
+		return { type: "dictionary" as "dictionary", data: dictionary, condition: options?.condition }
 	},
 	array: function<T extends Shape>(shape: T, options?: { condition?: (arr: Array<any>) => boolean }) {
 		return { type: "array" as "array", data: shape, condition: options?.condition }
@@ -60,7 +62,7 @@ export const s = {
 	}
 }
 
-export function getDictShapeKeys<T extends DictShape>(shape: T): Array<string> {
+export function getDictionaryShapeKeys<T extends DictionaryShape>(shape: T): Array<string> {
 	return Object.keys(shape.data)
 }
 

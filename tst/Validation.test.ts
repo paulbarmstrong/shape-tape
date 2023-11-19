@@ -49,8 +49,8 @@ describe("validateShape", () => {
 		expect(() => validateShape(null, s.literal(undefined))).toThrow()
 	})
 	test("dict", () => {
-		expect(() => validateShape({}, s.dict({}))).not.toThrow()
-		const fruitSelectionShape = s.dict({fruit: s.union([s.literal("apple"), s.literal("banana"), s.literal("orange")])})
+		expect(() => validateShape({}, s.dictionary({}))).not.toThrow()
+		const fruitSelectionShape = s.dictionary({fruit: s.union([s.literal("apple"), s.literal("banana"), s.literal("orange")])})
 		;[{fruit: "apple"}, {fruit: "banana"}, {fruit: "orange"}].forEach(validEntity => {
 			expect(() => validateShape(validEntity, fruitSelectionShape)).not.toThrow()
 		})
@@ -119,18 +119,18 @@ describe("validateShape", () => {
 		expect(getErrorPath(() => validateShape(true, s.number()))).toStrictEqual([])
 		expect(getErrorPath(() => validateShape("false", s.boolean()))).toStrictEqual([])
 		expect(getErrorPath(() => validateShape("apple", s.literal("banana")))).toStrictEqual([])
-		expect(getErrorPath(() => validateShape("apple", s.dict({fruit: s.string()})))).toStrictEqual([])
-		expect(getErrorPath(() => validateShape({plant: "grass"}, s.dict({fruit: s.string()})))).toStrictEqual([])
+		expect(getErrorPath(() => validateShape("apple", s.dictionary({fruit: s.string()})))).toStrictEqual([])
+		expect(getErrorPath(() => validateShape({plant: "grass"}, s.dictionary({fruit: s.string()})))).toStrictEqual([])
 
-		expect(getErrorPath(() => validateShape({}, s.dict({fruit: s.string()})))).toStrictEqual(["fruit"])
-		expect(getErrorPath(() => validateShape({fruit: 5}, s.dict({fruit: s.string()})))).toStrictEqual(["fruit"])
+		expect(getErrorPath(() => validateShape({}, s.dictionary({fruit: s.string()})))).toStrictEqual(["fruit"])
+		expect(getErrorPath(() => validateShape({fruit: 5}, s.dictionary({fruit: s.string()})))).toStrictEqual(["fruit"])
 
-		expect(getErrorPath(() => validateShape({config: {frequency: "ten"}}, s.dict({config: s.dict({frequency: s.number()})}))))
+		expect(getErrorPath(() => validateShape({config: {frequency: "ten"}}, s.dictionary({config: s.dictionary({frequency: s.number()})}))))
 			.toStrictEqual(["config", "frequency"])
 		expect(getErrorPath(() => validateShape(["pear", "apple"], s.array(s.union([s.literal("apple"), s.literal("banana")])))))
 			.toStrictEqual([0])
-		const usersShape = s.dict({
-			users: s.array(s.dict({
+		const usersShape = s.dictionary({
+			users: s.array(s.dictionary({
 				id: s.number(),
 				name: s.string()
 			}))
@@ -139,7 +139,7 @@ describe("validateShape", () => {
 			.toStrictEqual(["users", 1, "id"])
 	}),
 	test("README example", () => {
-		const resourceShape = s.dict({
+		const resourceShape = s.dictionary({
 			id: s.string({regex: /^[a-zA-Z0-9\-_]{10}$/}),
 			state: s.union([s.literal("pending"), s.literal("active"), s.literal("removed")]),
 			createdAt: s.integer()

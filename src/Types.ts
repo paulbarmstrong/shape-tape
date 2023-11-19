@@ -20,8 +20,8 @@ export type LiteralShape = {
 	data: Literal
 }
 
-export type DictShape = {
-	type: "dict",
+export type DictionaryShape = {
+	type: "dictionary",
 	data: {
 		[key: string]: Shape
 	}
@@ -45,7 +45,7 @@ export type ClassShape = {
 	condition?: (entity: InstanceType<AnyClassConstructor>) => boolean
 }
 
-export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape | DictShape
+export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape | DictionaryShape
 	| ArrayShape | UnionShape | ClassShape
 
 type IncrDepth<Depth extends any[]> = [...Depth, never]
@@ -71,7 +71,7 @@ export type ShapeToType<S extends Shape, Depth extends any[] = D0> =
 			T extends "literal" ? D extends Literal ? (
 				D
 			) : never :
-			T extends "dict" ? D extends { [key: string]: infer U extends Shape } ? (
+			T extends "dictionary" ? D extends { [key: string]: infer U extends Shape } ? (
 				{ [K in keyof D]: ShapeToType<D[K], IncrDepth<Depth>> }
 			) : never :
 			T extends "array" ? D extends Shape ? (

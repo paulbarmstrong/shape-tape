@@ -11,9 +11,9 @@ npm install shape-tape
 import { s, validateShape } from "shape-tape"
 
 // Define a shape.
-const resourceShape = s.dict({
+const resourceShape = s.dictionary({
 	id: s.string({regex: /^[a-zA-Z0-9\-_]{10}$/}),
-	state: s.union(s.literal("pending"), s.literal("active"), s.literal("removed")),
+	state: s.union([s.literal("pending"), s.literal("active"), s.literal("removed")]),
 	createdAt: s.integer()
 })
 

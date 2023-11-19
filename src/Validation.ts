@@ -47,7 +47,7 @@ export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: A
 		if (typeof entity !== "boolean") throw new ShapeValidationError(path)
 	} else if (shape.type === "literal") {
 		if (entity !== shape.data) throw new ShapeValidationError(path)
-	} else if (shape.type === "dict") {
+	} else if (shape.type === "dictionary") {
 		if (typeof entity !== "object" || entity === null) throw new ShapeValidationError(path)
 		Object.keys(entity).forEach(k1 => {
 			if (!Object.keys(shape.data).find(k2 => k1 === k2)) {
