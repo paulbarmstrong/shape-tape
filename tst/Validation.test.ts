@@ -158,7 +158,8 @@ describe("validateShape", () => {
 		class MyError extends Error {
 			constructor(message: string) { super(message) }
 		}
-		expect(() => validateShape(5, s.string(), {error: error => new MyError(error.message)}))
+		expect(() => validateShape("five", s.string(), {error: e => new MyError(e.message)})).not.toThrow()
+		expect(() => validateShape(5, s.string(), {error: e => new MyError(e.message)}))
 			.toThrow(new MyError("Invalid parameter value."))
 	})
 })

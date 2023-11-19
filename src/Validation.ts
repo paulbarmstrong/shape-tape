@@ -66,16 +66,16 @@ export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: A
 			throw new ShapeValidationError(path)
 		}
 	} else if (_internal._type === "union") {
-		const matchedSubShapes = _internal._data.filter(subShape => {
+		const matchedMembers = _internal._data.filter(member => {
 			try {
-				validateShapeAux(entity, subShape, path)
+				validateShapeAux(entity, member, path)
 				return true
 			} catch (error) {
 				if (error instanceof ShapeValidationError) return false
 				else throw error
 			}
 		})
-		if (matchedSubShapes.length === 0) throw new ShapeValidationError(path)
+		if (matchedMembers.length === 0) throw new ShapeValidationError(path)
 	} else if (_internal._type === "class") {
 		if (entity instanceof _internal._data) {
 			if (_internal._condition !== undefined && !_internal._condition(entity)) throw new ShapeValidationError(path)

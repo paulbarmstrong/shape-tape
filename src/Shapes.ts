@@ -50,8 +50,8 @@ function array<T extends Shape>(shape: T, options?: { condition?: (arr: Array<an
 	return { _internal: { _type: "array" as "array", _data: shape, _condition: options?.condition } }
 }
 
-function union<T extends Array<Shape>>(subShapes: T) {
-	return { _internal: { _type: "union" as "union", _data: subShapes }, subShapes: subShapes }
+function union<T extends Array<Shape>>(members: T) {
+	return { _internal: { _type: "union" as "union", _data: members }, members: members }
 }
 
 function clazz<T extends AnyClassConstructor>(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean } ) {

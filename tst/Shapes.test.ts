@@ -7,8 +7,8 @@ describe("dictionary", () => {
 })
 
 describe("union", () => {
-	test("subShapes", () => {
-		expect(s.union([s.literal("apple"), s.literal("orange")]).subShapes)
+	test("members", () => {
+		expect(s.union([s.literal("apple"), s.literal("orange")]).members)
 			.toStrictEqual([s.literal("apple"), s.literal("orange")])
 	})
 })

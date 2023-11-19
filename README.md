@@ -17,7 +17,7 @@ const resourceShape = s.dictionary({
 	createdAt: s.integer()
 })
 
-// Validate that some data matches to your shape.
+// Validate that some data matches your shape.
 const goodData = JSON.parse("{\"id\":\"ui_1zoEJ18\",\"state\":\"active\",\"createdAt\":1700354795466}")
 const resource = validateShape(goodData, resourceShape)
 
@@ -26,7 +26,7 @@ if (resource.state === "active") ...
 
 ...
 
-// Data that doesn't match to your shape causes a ShapeValidationError.
+// Data that doesn't match your shape causes a ShapeValidationError.
 const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
 const resource = validateShape(badData, resourceShape) // This causes ShapeValidationError
 ```

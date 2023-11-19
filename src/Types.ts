@@ -53,7 +53,7 @@ export type UnionShape = {
 		_type: "union",
 		_data: Array<Shape>,
 	}
-	subShapes: Array<Shape>
+	members: Array<Shape>
 }
 
 export type ClassShape = {
