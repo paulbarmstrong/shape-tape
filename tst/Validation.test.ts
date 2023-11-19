@@ -10,6 +10,8 @@ describe("validateShape", () => {
 		})
 		expect(() => validateShape("apple", s.string({predicate: str => str.length === 5}))).not.toThrow()
 		expect(() => validateShape("apple", s.string({predicate: str => str.length === 6}))).toThrow(ShapeValidationError)
+		expect(() => validateShape("10px", s.optional(s.string({regex: /^[0-9]+px$/})))).not.toThrow()
+		expect(() => validateShape("10pt", s.optional(s.string({regex: /^[0-9]+px$/})))).toThrow(ShapeValidationError)
 	})
 	test("number", () => {
 		[-10, 0, 1.5, 81, 13/6].forEach(validEntity => {
@@ -20,6 +22,8 @@ describe("validateShape", () => {
 		})
 		expect(() => validateShape(5, s.number({predicate: num => num < 6}))).not.toThrow()
 		expect(() => validateShape(5, s.number({predicate: num => num < 5}))).toThrow(ShapeValidationError)
+		expect(() => validateShape(10, s.number({lowerBound: 4, upperBound: 10}))).not.toThrow()
+		expect(() => validateShape(11, s.number({lowerBound: 4, upperBound: 10}))).toThrow(ShapeValidationError)
 	})
 	test("boolean", () => {
 		[false, true].forEach(validEntity => {
@@ -93,10 +97,6 @@ describe("validateShape", () => {
 		expect(() => validateShape(undefined, s.optional(s.string()))).not.toThrow()
 		expect(() => validateShape("hello", s.optional(s.string()))).not.toThrow()
 		expect(() => validateShape(10, s.optional(s.string()))).toThrow(ShapeValidationError)
-	})
-	test("stringPattern", () => {
-		expect(() => validateShape("10px", s.optional(s.string({regex: /^[0-9]+px$/})))).not.toThrow()
-		expect(() => validateShape("10pt", s.optional(s.string({regex: /^[0-9]+px$/})))).toThrow(ShapeValidationError)
 	})
 	test("ShapeValidationError path", () => {
 		expect(getErrorPath(() => validateShape(5, s.string()))).toStrictEqual([])

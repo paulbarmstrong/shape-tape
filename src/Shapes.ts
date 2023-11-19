@@ -7,17 +7,26 @@ export const s = {
 		) : (
 			undefined
 		)
-		const predicate = regex !== undefined || options?.predicate !== undefined ? (
+		const predicate = options?.predicate !== undefined || regex !== undefined ? (
 			(entity: string) => {
-				return (regex === undefined || regex.test(entity)) && (options?.predicate === undefined || options.predicate(entity))
+				return (options?.predicate === undefined || options.predicate(entity)) && (regex === undefined || regex.test(entity))
 			}
 		) : (
 			undefined
 		)
 		return { type: "string" as "string", predicate: predicate }
 	},
-	number: function(options?: { predicate?: (entity: number) => boolean }) {
-		return { type: "number" as "number", predicate: options?.predicate }
+	number: function(options?: { predicate?: (entity: number) => boolean, lowerBound?: number, upperBound?: number }) {
+		const predicate = options?.predicate !== undefined || options?.lowerBound !== undefined || options?.upperBound !== undefined ? (
+			(entity: number) => {
+				return (options?.predicate === undefined || options.predicate(entity)) &&
+					(options?.lowerBound === undefined || entity >= options?.lowerBound) &&
+					(options?.upperBound === undefined || entity <= options?.upperBound)
+			}
+		) : (
+			undefined
+		)
+		return { type: "number" as "number", predicate: predicate }
 	},
 	boolean: function() {
 		return { type: "boolean" as "boolean" }
