@@ -10,11 +10,20 @@ export class ShapeValidationError extends Error {
 }
 
 export function getErrorMessage(path: Array<string | number>): string {
-	return path.length > 0 ? (
-		`Invalid value for parameter ${path.map((entry, index) => index === 0 && typeof entry !== "number" ? JSON.stringify(entry) : `[${JSON.stringify(entry)}]`).join("")}.`
-	) : (
-		"Invalid parameter value."
-	)
+	if (path.length > 0) {
+		const stringedPath = path.map((entry, index) => {
+			if (index === 0 && typeof entry !== "number" && path.length > 1) {
+				return entry
+			} else if (index === 0 && typeof entry !== "number") {
+				return JSON.stringify(entry)
+			} else {
+				return `[${JSON.stringify(entry)}]`
+			}
+		}).join("")
+		return `Invalid value for parameter ${stringedPath}.`
+	} else {
+		return "Invalid parameter value."
+	}
 }
 
 export function validateShape<T extends Shape>(entity: any, shape: T, options?: {error: (err: ShapeValidationError) => Error}): ShapeToType<T> {
