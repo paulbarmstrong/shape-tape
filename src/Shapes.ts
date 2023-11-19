@@ -1,4 +1,4 @@
-import { AnyClassConstructor, DictionaryShape, Literal, LiteralShape, Shape, UnionShape } from "./Types"
+import { AnyClassConstructor, Literal, Shape, UnionShape } from "./Types"
 import { getGlobalRegex } from "./Utilities"
 
 export const s = {
@@ -33,24 +33,30 @@ export const s = {
 		return { type: "boolean" as "boolean" }
 	},
 	literal: function<T extends Literal>(literal: T) {
-		return { type: "literal" as "literal", data: literal }
+		return { type: "literal" as "literal", data: literal, value: literal }
 	},
 	dictionary: function<T extends { [key: string]: Shape }>(dictionary: T, options?: {
 		condition?: (entity: { [key: string]: any }) => boolean
 	}) {
-		return { type: "dictionary" as "dictionary", data: dictionary, condition: options?.condition }
+		return {
+			type: "dictionary" as "dictionary",
+			data: dictionary,
+			condition: options?.condition,
+			keys: Object.keys(dictionary)
+		}
 	},
 	array: function<T extends Shape>(shape: T, options?: { condition?: (arr: Array<any>) => boolean }) {
 		return { type: "array" as "array", data: shape, condition: options?.condition }
 	},
 	union: function<T extends Array<Shape>>(subShapes: T) {
-		return { type: "union" as "union", data: subShapes }
+		return { type: "union" as "union", data: subShapes, subShapes: subShapes }
 	},
 	class: function<T extends AnyClassConstructor>(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean } ) {
 		return { type: "class" as "class", data: clazz, condition: options?.condition }
 	},
 	optional: function<T extends Shape>(shape: T) {
-		return { type: "union" as "union", data: [shape, { type: "literal" as "literal", data: undefined }] }
+		const data = [shape, { type: "literal" as "literal", data: undefined, value: undefined }]
+		return { type: "union" as "union", data: data, subShapes: data }
 	},
 	integer: function(options?: { lowerBound?: number, upperBound?: number }) {
 		function condition(entity: number) {
@@ -60,16 +66,4 @@ export const s = {
 		}
 		return { type: "number" as "number", condition: condition }
 	}
-}
-
-export function getDictionaryShapeKeys<T extends DictionaryShape>(shape: T): Array<string> {
-	return Object.keys(shape.data)
-}
-
-export function getUnionShapeSubShapes<T extends UnionShape>(shape: T): Array<Shape> {
-	return shape.data
-}
-
-export function getLiteralShapeValue<T extends LiteralShape>(shape: T): Literal {
-	return shape.data
 }

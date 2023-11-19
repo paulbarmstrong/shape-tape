@@ -17,7 +17,8 @@ export type BooleanShape = {
 
 export type LiteralShape = {
 	type: "literal",
-	data: Literal
+	data: Literal,
+	value: Literal
 }
 
 export type DictionaryShape = {
@@ -25,7 +26,8 @@ export type DictionaryShape = {
 	data: {
 		[key: string]: Shape
 	}
-	condition?: (entity: { [key: string]: any }) => boolean
+	condition?: (entity: { [key: string]: any }) => boolean,
+	keys: Array<string>
 }
 
 export type ArrayShape = {
@@ -36,7 +38,8 @@ export type ArrayShape = {
 
 export type UnionShape = {
 	type: "union",
-	data: Array<Shape>
+	data: Array<Shape>,
+	subShapes: Array<Shape>
 }
 
 export type ClassShape = {
