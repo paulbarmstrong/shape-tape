@@ -31,41 +31,42 @@ export function validateShape<T extends Shape>(entity: any, shape: T, options?: 
 }
 
 export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: Array<string | number>) {
-	if (shape._type === "string") {
+	const _internal = shape._internal
+	if (_internal._type === "string") {
 		if (typeof entity === "string") {
-			if (shape._condition && !shape._condition(entity)) throw new ShapeValidationError(path)
+			if (_internal._condition && !_internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
-	} else if (shape._type === "number") {
+	} else if (_internal._type === "number") {
 		if (typeof entity === "number") {
-			if (shape._condition && !shape._condition(entity)) throw new ShapeValidationError(path)
+			if (_internal._condition && !_internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
-	} else if (shape._type === "boolean") {
+	} else if (_internal._type === "boolean") {
 		if (typeof entity !== "boolean") throw new ShapeValidationError(path)
-	} else if (shape._type === "literal") {
-		if (entity !== shape._data) throw new ShapeValidationError(path)
-	} else if (shape._type === "dictionary") {
+	} else if (_internal._type === "literal") {
+		if (entity !== _internal._data) throw new ShapeValidationError(path)
+	} else if (_internal._type === "dictionary") {
 		if (typeof entity !== "object" || entity === null) throw new ShapeValidationError(path)
 		Object.keys(entity).forEach(k1 => {
-			if (!Object.keys(shape._data).find(k2 => k1 === k2)) {
+			if (!Object.keys(_internal._data).find(k2 => k1 === k2)) {
 				throw new ShapeValidationError(path)
 			}
 		})
-		Object.keys(shape._data).forEach(parameterKey => {
-			validateShapeAux(entity[parameterKey], (shape._data)[parameterKey], [...path, parameterKey])
+		Object.keys(_internal._data).forEach(parameterKey => {
+			validateShapeAux(entity[parameterKey], (_internal._data)[parameterKey], [...path, parameterKey])
 		})
-	} else if (shape._type === "array") {
+	} else if (_internal._type === "array") {
 		if (Array.isArray(entity)) {
-			entity.forEach((element, index) => validateShapeAux(element, shape._data, [...path, index]))
-			if (shape._condition && !shape._condition(entity)) throw new ShapeValidationError(path)
+			entity.forEach((element, index) => validateShapeAux(element, _internal._data, [...path, index]))
+			if (_internal._condition && !_internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
-	} else if (shape._type === "union") {
-		const matchedSubShapes = shape._data.filter(subShape => {
+	} else if (_internal._type === "union") {
+		const matchedSubShapes = _internal._data.filter(subShape => {
 			try {
 				validateShapeAux(entity, subShape, path)
 				return true
@@ -75,9 +76,9 @@ export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: A
 			}
 		})
 		if (matchedSubShapes.length === 0) throw new ShapeValidationError(path)
-	} else if (shape._type === "class") {
-		if (entity instanceof shape._data) {
-			if (shape._condition !== undefined && !shape._condition(entity)) throw new ShapeValidationError(path)
+	} else if (_internal._type === "class") {
+		if (entity instanceof _internal._data) {
+			if (_internal._condition !== undefined && !_internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}

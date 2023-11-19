@@ -14,7 +14,7 @@ function string(options?: { condition?: (entity: string) => boolean, regex?: Reg
 	) : (
 		undefined
 	)
-	return { _type: "string" as "string", _condition: condition }
+	return { _internal: { _type: "string" as "string", _condition: condition } }
 }
 
 function number(options?: { condition?: (entity: number) => boolean, lowerBound?: number, upperBound?: number }) {
@@ -27,37 +27,35 @@ function number(options?: { condition?: (entity: number) => boolean, lowerBound?
 	) : (
 		undefined
 	)
-	return { _type: "number" as "number", _condition: condition }
+	return { _internal: { _type: "number" as "number", _condition: condition } }
 }
 
 function boolean() {
-	return { _type: "boolean" as "boolean" }
+	return { _internal: { _type: "boolean" as "boolean" } }
 }
 
 function literal<T extends Literal>(literal: T) {
-	return { _type: "literal" as "literal", _data: literal, value: literal }
+	return { _internal: { _type: "literal" as "literal", _data: literal }, value: literal }
 }
 
 function dictionary<T extends { [key: string]: Shape }>(dictionary: T,
 		options?: {condition?: (entity: { [key: string]: any }) => boolean}) {
 	return {
-		_type: "dictionary" as "dictionary",
-		_data: dictionary,
-		_condition: options?.condition,
+		_internal: { _type: "dictionary" as "dictionary", _data: dictionary, _condition: options?.condition, },
 		keys: Object.keys(dictionary)
 	}
 }
 
 function array<T extends Shape>(shape: T, options?: { condition?: (arr: Array<any>) => boolean }) {
-	return { _type: "array" as "array", _data: shape, _condition: options?.condition }
+	return { _internal: { _type: "array" as "array", _data: shape, _condition: options?.condition } }
 }
 
 function union<T extends Array<Shape>>(subShapes: T) {
-	return { _type: "union" as "union", _data: subShapes, subShapes: subShapes }
+	return { _internal: { _type: "union" as "union", _data: subShapes }, subShapes: subShapes }
 }
 
 function clazz<T extends AnyClassConstructor>(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean } ) {
-	return { _type: "class" as "class", _data: clazz, _condition: options?.condition }
+	return { _internal: { _type: "class" as "class", _data: clazz, _condition: options?.condition } }
 }
 
 function optional<T extends Shape>(shape: T) {
