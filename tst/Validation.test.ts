@@ -8,8 +8,8 @@ describe("validateShape", () => {
 		;[true, false, null, undefined, {}, {a: "b"}, [], [5, "b"], new Map(), 5].forEach((invalidEntity: any) => {
 			expect(() => validateShape(invalidEntity, s.string())).toThrow(ShapeValidationError)
 		})
-		expect(() => validateShape("apple", s.string({predicate: str => str.length === 5}))).not.toThrow()
-		expect(() => validateShape("apple", s.string({predicate: str => str.length === 6}))).toThrow(ShapeValidationError)
+		expect(() => validateShape("apple", s.string({condition: str => str.length === 5}))).not.toThrow()
+		expect(() => validateShape("apple", s.string({condition: str => str.length === 6}))).toThrow(ShapeValidationError)
 		expect(() => validateShape("10px", s.optional(s.string({regex: /^[0-9]+px$/})))).not.toThrow()
 		expect(() => validateShape("10pt", s.optional(s.string({regex: /^[0-9]+px$/})))).toThrow(ShapeValidationError)
 	})
@@ -20,8 +20,8 @@ describe("validateShape", () => {
 		;["apple", "", true, false, null, undefined, {}, {a: "b"}, [], [5, 6], new Map()].forEach((invalidEntity: any) => {
 			expect(() => validateShape(invalidEntity, s.number())).toThrow(ShapeValidationError)
 		})
-		expect(() => validateShape(5, s.number({predicate: num => num < 6}))).not.toThrow()
-		expect(() => validateShape(5, s.number({predicate: num => num < 5}))).toThrow(ShapeValidationError)
+		expect(() => validateShape(5, s.number({condition: num => num < 6}))).not.toThrow()
+		expect(() => validateShape(5, s.number({condition: num => num < 5}))).toThrow(ShapeValidationError)
 		expect(() => validateShape(10, s.number({lowerBound: 4, upperBound: 10}))).not.toThrow()
 		expect(() => validateShape(11, s.number({lowerBound: 4, upperBound: 10}))).toThrow(ShapeValidationError)
 	})
@@ -67,8 +67,8 @@ describe("validateShape", () => {
 		;["apple", "", null, true, false, undefined, {}, {a: "b"}, [5, "c"], new Map(), 5, [5]].forEach((invalidEntity: any) => {
 			expect(() => validateShape(invalidEntity, s.array(s.string()))).toThrow(ShapeValidationError)
 		})
-		expect(() => validateShape(["a", "b"], s.array(s.string(), {predicate: arr => arr.length < 3}))).not.toThrow()
-		expect(() => validateShape(["a", "b", "c"], s.array(s.string(), {predicate: arr => arr.length < 3}))).toThrow(ShapeValidationError)
+		expect(() => validateShape(["a", "b"], s.array(s.string(), {condition: arr => arr.length < 3}))).not.toThrow()
+		expect(() => validateShape(["a", "b", "c"], s.array(s.string(), {condition: arr => arr.length < 3}))).toThrow(ShapeValidationError)
 	})
 	test("union", () => {
 		const fruitShape = s.union(s.literal("apple"), s.literal("banana"), s.literal("orange"))
@@ -90,8 +90,8 @@ describe("validateShape", () => {
 		}
 		expect(() => validateShape([new Fruit("apple"), new Fruit("banana")], s.array(s.class(Fruit)))).not.toThrow()
 		expect(() => validateShape([new Fruit("apple"), "banana"], s.array(s.class(Fruit)))).toThrow(ShapeValidationError)
-		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, {predicate: fruit => fruit.name.length > 4}))).not.toThrow()
-		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, {predicate: fruit => fruit.name.length > 5}))).toThrow(ShapeValidationError)
+		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, {condition: fruit => fruit.name.length > 4}))).not.toThrow()
+		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, {condition: fruit => fruit.name.length > 5}))).toThrow(ShapeValidationError)
 	})
 	test("optional", () => {
 		expect(() => validateShape(undefined, s.optional(s.string()))).not.toThrow()

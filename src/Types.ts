@@ -3,12 +3,12 @@ export type Literal = string | number | boolean | null | undefined
 
 type StringShape = {
 	type: "string",
-	predicate?: (value: string) => boolean
+	condition?: (value: string) => boolean
 }
 
 type NumberShape = {
 	type: "number",
-	predicate?: (entity: number) => boolean
+	condition?: (entity: number) => boolean
 }
 
 type BooleanShape = {
@@ -29,13 +29,13 @@ type DictShape = {
 	data: {
 		[key: string]: Shape
 	}
-	predicate?: (entity: { [key: string]: any }) => boolean
+	condition?: (entity: { [key: string]: any }) => boolean
 }
 
 type ArrayShape = {
 	type: "array",
 	data: Shape,
-	predicate?: (entity: Array<any>) => boolean
+	condition?: (entity: Array<any>) => boolean
 }
 
 type UnionShape = {
@@ -46,7 +46,7 @@ type UnionShape = {
 type ClassShape = {
 	type: "class",
 	data: AnyClassConstructor,
-	predicate?: (entity: AnyClassConstructor) => boolean
+	condition?: (entity: AnyClassConstructor) => boolean
 }
 
 export type Shape = StringShape | NumberShape | BooleanShape | UndefinedShape | LiteralShape | DictShape

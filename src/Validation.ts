@@ -20,13 +20,13 @@ export function getErrorMessage(path: Array<string | number>): string {
 export function validateShape<T extends Shape>(entity: any, shape: T, path: Array<string | number> = []): ShapeToType<T> {
 	if (shape.type === "string") {
 		if (typeof entity === "string") {
-			if (shape.predicate && !shape.predicate(entity)) throw new ShapeValidationError(path)
+			if (shape.condition && !shape.condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
 	} else if (shape.type === "number") {
 		if (typeof entity === "number") {
-			if (shape.predicate && !shape.predicate(entity)) throw new ShapeValidationError(path)
+			if (shape.condition && !shape.condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
@@ -49,7 +49,7 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 	} else if (shape.type === "array") {
 		if (Array.isArray(entity)) {
 			entity.forEach((element, index) => validateShape(element, shape.data, [...path, index]))
-			if (shape.predicate && !shape.predicate(entity)) throw new ShapeValidationError(path)
+			if (shape.condition && !shape.condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
@@ -66,7 +66,7 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 		if (matchedSubShapes.length === 0) throw new ShapeValidationError(path)
 	} else if (shape.type === "class") {
 		if (entity instanceof shape.data) {
-			if (shape.predicate && !shape.predicate(entity)) throw new ShapeValidationError(path)
+			if (shape.condition && !shape.condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
