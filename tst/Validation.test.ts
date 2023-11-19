@@ -154,6 +154,13 @@ describe("validateShape", () => {
 		const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
 		expect(() => validateShape(badData, resourceShape)).toThrow(ShapeValidationError)
 	})
+	test("Error option", () => {
+		class MyError extends Error {
+			constructor(message: string) { super(message) }
+		}
+		expect(() => validateShape(5, s.string(), {error: error => new MyError(error.message)}))
+			.toThrow(new MyError("Invalid parameter value."))
+	})
 })
 
 test("getErrorMessage", () => {

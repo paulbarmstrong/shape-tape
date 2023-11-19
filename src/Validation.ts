@@ -17,7 +17,20 @@ export function getErrorMessage(path: Array<string | number>): string {
 	)
 }
 
-export function validateShape<T extends Shape>(entity: any, shape: T, path: Array<string | number> = []): ShapeToType<T> {
+export function validateShape<T extends Shape>(entity: any, shape: T, options?: {error: (err: ShapeValidationError) => Error}): ShapeToType<T> {
+	try {
+		validateShapeAux(entity, shape, [])
+	} catch (error) {
+		if (error instanceof ShapeValidationError && options?.error !== undefined) {
+			throw options?.error(error)
+		} else {
+			throw error
+		}
+	}
+	return entity as ShapeToType<T>
+}
+
+export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: Array<string | number>) {
 	if (shape.type === "string") {
 		if (typeof entity === "string") {
 			if (shape.condition && !shape.condition(entity)) throw new ShapeValidationError(path)
@@ -42,11 +55,11 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 			}
 		})
 		Object.keys(shape.data).forEach(parameterKey => {
-			validateShape(entity[parameterKey], (shape.data)[parameterKey], [...path, parameterKey])
+			validateShapeAux(entity[parameterKey], (shape.data)[parameterKey], [...path, parameterKey])
 		})
 	} else if (shape.type === "array") {
 		if (Array.isArray(entity)) {
-			entity.forEach((element, index) => validateShape(element, shape.data, [...path, index]))
+			entity.forEach((element, index) => validateShapeAux(element, shape.data, [...path, index]))
 			if (shape.condition && !shape.condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
@@ -54,7 +67,7 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 	} else if (shape.type === "union") {
 		const matchedSubShapes = shape.data.filter(subShape => {
 			try {
-				validateShape(entity, subShape, path)
+				validateShapeAux(entity, subShape, path)
 				return true
 			} catch (error) {
 				if (error instanceof ShapeValidationError) return false
@@ -64,13 +77,11 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 		if (matchedSubShapes.length === 0) throw new ShapeValidationError(path)
 	} else if (shape.type === "class") {
 		if (entity instanceof shape.data) {
-			if (shape.condition && !shape.condition(entity)) throw new ShapeValidationError(path)
+			if (shape.condition !== undefined && !shape.condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
 	} else {
 		throw Error("Unmatched shape.")
 	}
-
-	return entity as ShapeToType<typeof shape>
 }
