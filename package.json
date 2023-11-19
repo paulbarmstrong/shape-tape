@@ -1,12 +1,12 @@
 {
 	"name": "shape-tape",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"main": "dist/src/index",
 	"typings": "dist/src/index",
 	"scripts": {
-		"clean": "rm -rf ./dist",
 		"build": "tsc",
-		"test": "npx jest"
+		"test": "npx jest",
+		"prepublishOnly": "npm run build && npm run test"
 	},
 	"repository": {
 		"type": "git",

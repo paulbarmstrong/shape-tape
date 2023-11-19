@@ -1,6 +1,11 @@
 ## shape-tape
 A TypeScript/JavaScript library to help with typing and runtime validation of structured data.
 
+### Installation
+```
+npm install shape-tape
+```
+
 ### Usage
 ```javascript
 import { s, validateShape } from "shape-tape"
@@ -23,7 +28,7 @@ if (resource.state === "active") ...
 
 // Data that doesn't match to your shape causes a ShapeValidationError.
 const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
-const resource = validateShape(badData, resourceShape) // This causes ShapeValidationError: "Invalid value for paramter id."
+const resource = validateShape(badData, resourceShape) // This causes ShapeValidationError
 ```
 
 If you're using TypeScript you can use the shape's TypeScript Type.

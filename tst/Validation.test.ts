@@ -92,6 +92,8 @@ describe("validateShape", () => {
 		expect(() => validateShape([new Fruit("apple"), "banana"], s.array(s.class(Fruit)))).toThrow(ShapeValidationError)
 		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, {condition: fruit => fruit.name.length > 4}))).not.toThrow()
 		expect(() => validateShape(new Fruit("apple"), s.class(Fruit, {condition: fruit => fruit.name.length > 5}))).toThrow(ShapeValidationError)
+		expect(() => validateShape(new Uint8Array(), s.class(Uint8Array))).not.toThrow()
+		expect(() => validateShape(new Uint16Array(), s.class(Uint8Array))).toThrow(ShapeValidationError)
 	})
 	test("optional", () => {
 		expect(() => validateShape(undefined, s.optional(s.string()))).not.toThrow()
