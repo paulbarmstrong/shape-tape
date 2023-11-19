@@ -32,8 +32,6 @@ export function validateShape<T extends Shape>(entity: any, shape: T, path: Arra
 		}
 	} else if (shape.type === "boolean") {
 		if (typeof entity !== "boolean") throw new ShapeValidationError(path)
-	} else if (shape.type === "undefined") {
-		if (typeof entity !== "undefined") throw new ShapeValidationError(path)
 	} else if (shape.type === "literal") {
 		if (entity !== shape.data) throw new ShapeValidationError(path)
 	} else if (shape.type === "dict") {

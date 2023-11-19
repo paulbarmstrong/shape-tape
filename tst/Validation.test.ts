@@ -50,7 +50,7 @@ describe("validateShape", () => {
 	})
 	test("dict", () => {
 		expect(() => validateShape({}, s.dict({}))).not.toThrow()
-		const fruitSelectionShape = s.dict({fruit: s.union(s.literal("apple"), s.literal("banana"), s.literal("orange"))})
+		const fruitSelectionShape = s.dict({fruit: s.union([s.literal("apple"), s.literal("banana"), s.literal("orange")])})
 		;[{fruit: "apple"}, {fruit: "banana"}, {fruit: "orange"}].forEach(validEntity => {
 			expect(() => validateShape(validEntity, fruitSelectionShape)).not.toThrow()
 		})
@@ -71,7 +71,7 @@ describe("validateShape", () => {
 		expect(() => validateShape(["a", "b", "c"], s.array(s.string(), {condition: arr => arr.length < 3}))).toThrow(ShapeValidationError)
 	})
 	test("union", () => {
-		const fruitShape = s.union(s.literal("apple"), s.literal("banana"), s.literal("orange"))
+		const fruitShape = s.union([s.literal("apple"), s.literal("banana"), s.literal("orange")])
 		;["apple", "banana", "orange"].forEach(validEntity => {
 			expect(() => validateShape(validEntity, fruitShape)).not.toThrow()
 		})
@@ -127,7 +127,7 @@ describe("validateShape", () => {
 
 		expect(getErrorPath(() => validateShape({config: {frequency: "ten"}}, s.dict({config: s.dict({frequency: s.number()})}))))
 			.toStrictEqual(["config", "frequency"])
-		expect(getErrorPath(() => validateShape(["pear", "apple"], s.array(s.union(s.literal("apple"), s.literal("banana"))))))
+		expect(getErrorPath(() => validateShape(["pear", "apple"], s.array(s.union([s.literal("apple"), s.literal("banana")])))))
 			.toStrictEqual([0])
 		const usersShape = s.dict({
 			users: s.array(s.dict({
@@ -140,8 +140,8 @@ describe("validateShape", () => {
 	}),
 	test("README example", () => {
 		const resourceShape = s.dict({
-			id: s.string({regex: /[a-zA-Z0-9\-_]{10}/}),
-			state: s.union(s.literal("pending"), s.literal("active"), s.literal("removed")),
+			id: s.string({regex: /^[a-zA-Z0-9\-_]{10}$/}),
+			state: s.union([s.literal("pending"), s.literal("active"), s.literal("removed")]),
 			createdAt: s.integer()
 		})
 

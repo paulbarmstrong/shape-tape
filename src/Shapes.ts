@@ -1,9 +1,10 @@
 import { AnyClassConstructor, Literal, Shape } from "./Types"
+import { getGlobalRegex } from "./Utilities"
 
 export const s = {
 	string: function(options?: { condition?: (entity: string) => boolean, regex?: RegExp }) {
 		const regex: RegExp | undefined = options?.regex !== undefined ? (
-			new RegExp(options?.regex.source, options?.regex.flags + options?.regex.global ? "" : "g")
+			getGlobalRegex(options?.regex)
 		) : (
 			undefined
 		)
@@ -40,7 +41,7 @@ export const s = {
 	array: function<T extends Shape>(shape: T, options?: { condition?: (arr: Array<any>) => boolean }) {
 		return { type: "array" as "array", data: shape, condition: options?.condition }
 	},
-	union: function<T extends Array<Shape>>(...subShapes: T) {
+	union: function<T extends Array<Shape>>(subShapes: T) {
 		return { type: "union" as "union", data: subShapes }
 	},
 	class: function<T extends AnyClassConstructor>(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean } ) {
@@ -56,5 +57,29 @@ export const s = {
 				(options?.upperBound === undefined || entity <= options?.upperBound)
 		}
 		return { type: "number" as "number", condition: condition }
+	}
+}
+
+export function getDictKeys<T extends Shape>(shape: T): Array<string> {
+	if (shape.type === "dict") {
+		return Object.keys(shape.data)
+	} else {
+		throw new Error("Cannot get keys for non-dict shape.")
+	}
+}
+
+export function getUnionSubShapes<T extends Shape>(shape: T): Array<Shape> {
+	if (shape.type === "union") {
+		return shape.data
+	} else {
+		throw new Error("Cannot get sub-shapes for non-union shape.")
+	}
+}
+
+export function getLiteralValue<T extends Shape>(shape: T): Literal {
+	if (shape.type === "literal") {
+		return shape.data
+	} else {
+		throw new Error("Cannot get literal for non-literal shape.")
 	}
 }

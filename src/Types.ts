@@ -15,10 +15,6 @@ type BooleanShape = {
 	type: "boolean"
 }
 
-type UndefinedShape = {
-	type: "undefined"
-}
-
 type LiteralShape = {
 	type: "literal",
 	data: Literal
@@ -49,7 +45,7 @@ type ClassShape = {
 	condition?: (entity: InstanceType<AnyClassConstructor>) => boolean
 }
 
-export type Shape = StringShape | NumberShape | BooleanShape | UndefinedShape | LiteralShape | DictShape
+export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape | DictShape
 	| ArrayShape | UnionShape | ClassShape
 
 type IncrDepth<Depth extends any[]> = [...Depth, never]
