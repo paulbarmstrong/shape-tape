@@ -1,26 +1,26 @@
 export type AnyClassConstructor<T = any> = new (...args: any[]) => T
 export type Literal = string | number | boolean | null | undefined
 
-type StringShape = {
+export type StringShape = {
 	type: "string",
 	condition?: (value: string) => boolean
 }
 
-type NumberShape = {
+export type NumberShape = {
 	type: "number",
 	condition?: (entity: number) => boolean
 }
 
-type BooleanShape = {
+export type BooleanShape = {
 	type: "boolean"
 }
 
-type LiteralShape = {
+export type LiteralShape = {
 	type: "literal",
 	data: Literal
 }
 
-type DictShape = {
+export type DictShape = {
 	type: "dict",
 	data: {
 		[key: string]: Shape
@@ -28,18 +28,18 @@ type DictShape = {
 	condition?: (entity: { [key: string]: any }) => boolean
 }
 
-type ArrayShape = {
+export type ArrayShape = {
 	type: "array",
 	data: Shape,
 	condition?: (entity: Array<any>) => boolean
 }
 
-type UnionShape = {
+export type UnionShape = {
 	type: "union",
 	data: Array<Shape>
 }
 
-type ClassShape = {
+export type ClassShape = {
 	type: "class",
 	data: AnyClassConstructor,
 	condition?: (entity: InstanceType<AnyClassConstructor>) => boolean

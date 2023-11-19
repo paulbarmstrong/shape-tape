@@ -1,4 +1,4 @@
-import { AnyClassConstructor, Literal, Shape } from "./Types"
+import { AnyClassConstructor, DictShape, Literal, LiteralShape, Shape, UnionShape } from "./Types"
 import { getGlobalRegex } from "./Utilities"
 
 export const s = {
@@ -60,26 +60,14 @@ export const s = {
 	}
 }
 
-export function getDictShapeKeys<T extends Shape>(shape: T): Array<string> {
-	if (shape.type === "dict") {
-		return Object.keys(shape.data)
-	} else {
-		throw new Error("Cannot get keys for non-dict shape.")
-	}
+export function getDictShapeKeys<T extends DictShape>(shape: T): Array<string> {
+	return Object.keys(shape.data)
 }
 
-export function getUnionShapeSubShapes<T extends Shape>(shape: T): Array<Shape> {
-	if (shape.type === "union") {
-		return shape.data
-	} else {
-		throw new Error("Cannot get sub-shapes for non-union shape.")
-	}
+export function getUnionShapeSubShapes<T extends UnionShape>(shape: T): Array<Shape> {
+	return shape.data
 }
 
-export function getLiteralShapeValue<T extends Shape>(shape: T): Literal {
-	if (shape.type === "literal") {
-		return shape.data
-	} else {
-		throw new Error("Cannot get literal for non-literal shape.")
-	}
+export function getLiteralShapeValue<T extends LiteralShape>(shape: T): Literal {
+	return shape.data
 }
