@@ -1,15 +1,15 @@
 import { AnyClassConstructor, Literal, Shape } from "./Types"
-import { getGlobalRegex } from "./Utilities"
+import { regexTest } from "./Utilities"
 
 function string(options?: { condition?: (entity: string) => boolean, regex?: RegExp }) {
 	const regex: RegExp | undefined = options?.regex !== undefined ? (
-		getGlobalRegex(options?.regex)
+		new RegExp(options!.regex!)
 	) : (
 		undefined
 	)
 	const condition = options?.condition !== undefined || regex !== undefined ? (
 		(entity: string) => {
-			return (options?.condition === undefined || options.condition(entity)) && (regex === undefined || regex.test(entity))
+			return (options?.condition === undefined || options.condition(entity)) && (regex === undefined || regexTest(regex, entity))
 		}
 	) : (
 		undefined

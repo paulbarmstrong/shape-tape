@@ -1,3 +1,6 @@
-export function getGlobalRegex(regex: RegExp): RegExp {
-	return new RegExp(regex.source, regex.flags + regex.global ? "" : "g")
+
+export function regexTest(regex: RegExp, str: string): boolean {
+	const result = regex.test(str)
+	regex.lastIndex = 0
+	return result
 }
