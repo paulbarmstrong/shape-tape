@@ -1,4 +1,5 @@
-import { Shape, ShapeToType } from "./Types"
+import { ArrayShape, BooleanShape, ClassShape, DictionaryShape, LiteralShape, NumberShape, Shape, StringShape, UnionShape } from "./Shapes"
+import { ShapeToType } from "./Types"
 
 export class ShapeValidationError extends Error {
 	path: Array<string | number>
@@ -40,42 +41,41 @@ export function validateShape<T extends Shape>(entity: any, shape: T, options?: 
 }
 
 export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: Array<string | number>) {
-	const _internal = shape._internal
-	if (_internal._type === "string") {
+	if (shape instanceof StringShape) {
 		if (typeof entity === "string") {
-			if (_internal._condition && !_internal._condition(entity)) throw new ShapeValidationError(path)
+			if (shape._internal._condition && !shape._internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
-	} else if (_internal._type === "number") {
+	} else if (shape instanceof NumberShape) {
 		if (typeof entity === "number") {
-			if (_internal._condition && !_internal._condition(entity)) throw new ShapeValidationError(path)
+			if (shape._internal._condition && !shape._internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
-	} else if (_internal._type === "boolean") {
+	} else if (shape instanceof BooleanShape) {
 		if (typeof entity !== "boolean") throw new ShapeValidationError(path)
-	} else if (_internal._type === "literal") {
-		if (entity !== _internal._data) throw new ShapeValidationError(path)
-	} else if (_internal._type === "dictionary") {
+	} else if (shape instanceof LiteralShape) {
+		if (entity !== shape.value()) throw new ShapeValidationError(path)
+	} else if (shape instanceof DictionaryShape) {
 		if (typeof entity !== "object" || entity === null) throw new ShapeValidationError(path)
 		Object.keys(entity).forEach(k1 => {
-			if (!Object.keys(_internal._data).find(k2 => k1 === k2)) {
+			if (!Object.keys(shape._internal._dictionary).find(k2 => k1 === k2)) {
 				throw new ShapeValidationError(path)
 			}
 		})
-		Object.keys(_internal._data).forEach(parameterKey => {
-			validateShapeAux(entity[parameterKey], (_internal._data)[parameterKey], [...path, parameterKey])
+		Object.keys(shape._internal._dictionary).forEach(parameterKey => {
+			validateShapeAux(entity[parameterKey], (shape._internal._dictionary)[parameterKey], [...path, parameterKey])
 		})
-	} else if (_internal._type === "array") {
+	} else if (shape instanceof ArrayShape) {
 		if (Array.isArray(entity)) {
-			entity.forEach((element, index) => validateShapeAux(element, _internal._data, [...path, index]))
-			if (_internal._condition && !_internal._condition(entity)) throw new ShapeValidationError(path)
+			entity.forEach((element, index) => validateShapeAux(element, shape._internal._memberShape, [...path, index]))
+			if (shape._internal._condition && !shape._internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}
-	} else if (_internal._type === "union") {
-		const matchedMembers = _internal._data.filter(member => {
+	} else if (shape instanceof UnionShape) {
+		const matchedMembers = (shape._internal._members as Array<Shape>).filter(member => {
 			try {
 				validateShapeAux(entity, member, path)
 				return true
@@ -85,9 +85,9 @@ export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: A
 			}
 		})
 		if (matchedMembers.length === 0) throw new ShapeValidationError(path)
-	} else if (_internal._type === "class") {
-		if (entity instanceof _internal._data) {
-			if (_internal._condition !== undefined && !_internal._condition(entity)) throw new ShapeValidationError(path)
+	} else if (shape instanceof ClassShape) {
+		if (entity instanceof shape._internal._clazz) {
+			if (shape._internal._condition !== undefined && !shape._internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
 		}

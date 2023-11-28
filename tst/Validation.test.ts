@@ -48,7 +48,7 @@ describe("validateShape", () => {
 		expect(() => validateShape(null, s.literal(null))).not.toThrow()
 		expect(() => validateShape(null, s.literal(undefined))).toThrow(ShapeValidationError)
 	})
-	test("dict", () => {
+	test("dictionary", () => {
 		expect(() => validateShape({}, s.dictionary({}))).not.toThrow()
 		const fruitSelectionShape = s.dictionary({fruit: s.union([s.literal("apple"), s.literal("banana"), s.literal("orange")])})
 		;[{fruit: "apple"}, {fruit: "banana"}, {fruit: "orange"}].forEach(validEntity => {

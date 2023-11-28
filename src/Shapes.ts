@@ -1,80 +1,109 @@
-import { AnyClassConstructor, Literal, Shape } from "./Types"
-import { regexTest } from "./Utilities"
+import { AnyClassConstructor, Literal } from "./Types"
+import { getConstructFunction, regexTest } from "./Utilities"
 
-function string(options?: { condition?: (entity: string) => boolean, regex?: RegExp }) {
-	const regex: RegExp | undefined = options?.regex !== undefined ? (
-		new RegExp(options!.regex!)
-	) : (
-		undefined
-	)
-	const condition = options?.condition !== undefined || regex !== undefined ? (
-		(entity: string) => {
-			return (options?.condition === undefined || options.condition(entity)) && (regex === undefined || regexTest(regex, entity))
-		}
-	) : (
-		undefined
-	)
-	return { _internal: { _type: "string" as "string", _condition: condition } }
-}
-
-function number(options?: { condition?: (entity: number) => boolean, lowerBound?: number, upperBound?: number }) {
-	const condition = options?.condition !== undefined || options?.lowerBound !== undefined || options?.upperBound !== undefined ? (
-		(entity: number) => {
-			return (options?.condition === undefined || options.condition(entity)) &&
-				(options?.lowerBound === undefined || entity >= options?.lowerBound) &&
-				(options?.upperBound === undefined || entity <= options?.upperBound)
-		}
-	) : (
-		undefined
-	)
-	return { _internal: { _type: "number" as "number", _condition: condition } }
-}
-
-function boolean() {
-	return { _internal: { _type: "boolean" as "boolean" } }
-}
-
-function literal<T extends Literal>(literal: T) {
-	return { _internal: { _type: "literal" as "literal", _data: literal }, value: literal }
-}
-
-function dictionary<T extends { [key: string]: Shape }>(dictionary: T,
-		options?: {condition?: (entity: T) => boolean}) {
-	return {
-		_internal: { _type: "dictionary" as "dictionary", _data: dictionary, _condition: options?.condition },
-		keys: Object.keys(dictionary) as Array<keyof T>
+export class StringShape {
+	#classname = "StringShape"
+	_internal: { _condition?: (value: string) => boolean }
+	constructor(options?: { condition?: (entity: string) => boolean, regex?: RegExp }) {
+		const regex: RegExp | undefined = options?.regex !== undefined ? (
+			new RegExp(options!.regex!)
+		) : (
+			undefined
+		)
+		const condition = options?.condition !== undefined || regex !== undefined ? (
+			(entity: string) => {
+				return (options?.condition === undefined || options.condition(entity)) && (regex === undefined || regexTest(regex, entity))
+			}
+		) : (
+			undefined
+		)
+		this._internal = { _condition: condition }
 	}
 }
 
-function array<T extends Shape>(shape: T, options?: { condition?: (arr: Array<any>) => boolean }) {
-	return { _internal: { _type: "array" as "array", _data: shape, _condition: options?.condition } }
+export class NumberShape {
+	#classname = "NumberShape"
+	_internal: { _condition?: (entity: number) => boolean }
+	constructor(options?: { condition?: (entity: number) => boolean, lowerBound?: number, upperBound?: number }) {
+		const condition = options?.condition !== undefined || options?.lowerBound !== undefined || options?.upperBound !== undefined ? (
+			(entity: number) => {
+				return (options?.condition === undefined || options.condition(entity)) &&
+					(options?.lowerBound === undefined || entity >= options?.lowerBound) &&
+					(options?.upperBound === undefined || entity <= options?.upperBound)
+			}
+		) : (
+			undefined
+		)
+		this._internal = { _condition: condition }
+	}
 }
 
-function union<T extends Array<Shape>>(members: T) {
-	return { _internal: { _type: "union" as "union", _data: members }, members: members }
+export class BooleanShape {
+	#classname = "BooleanShape"
 }
 
-function clazz<T extends AnyClassConstructor>(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean } ) {
-	return { _internal: { _type: "class" as "class", _data: clazz, _condition: options?.condition } }
+export class LiteralShape<T extends Literal> {
+	#classname = "LiteralShape"
+	_internal: { _value: T }
+	constructor(value: T) {
+		this._internal = { _value: value }
+	}
+	value(): T {
+		return this._internal._value
+	}
 }
 
-function optional<T extends Shape>(shape: T) {
-	return union([shape, s.literal(undefined)])
+export class DictionaryShape<T extends { [key: string]: Shape }> {
+	#classname = "DictionaryShape"
+	_internal: { _dictionary: T, _condition?: (entity: T) => boolean }
+	constructor(dictionary: T, options?: { condition?: (entity: T) => boolean }) {
+		this._internal = { _dictionary: dictionary, _condition: options?.condition }
+	}
+	keys(): Array<keyof T> {
+		return Object.keys(this._internal._dictionary)
+	}
 }
 
-function integer(options?: { lowerBound?: number, upperBound?: number }) {
-	return s.number({condition: Number.isInteger, lowerBound: options?.lowerBound, upperBound: options?.upperBound})
+export class ArrayShape<T extends Shape> {
+	#classname = "ArrayShape"
+	_internal: { _memberShape: T, _condition?: (entity: Array<T>) => boolean }
+	constructor(shape: T, options?: { condition?: (entity: Array<T>) => boolean }) {
+		this._internal = { _memberShape: shape, _condition: options?.condition }
+	}
 }
+
+export class UnionShape<T extends Array<Shape>> {
+	#classname = "UnionShape"
+	_internal: { _members: T }
+	constructor(members: T) {
+		this._internal = { _members: members }
+	}
+	members(): T {
+		return this._internal._members
+	}
+}
+
+export class ClassShape<T extends AnyClassConstructor> {
+	#classname = "ClassShape"
+	_internal: { _clazz: T, _condition?: (instance: InstanceType<T>) => boolean }
+	constructor(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean }) {
+		this._internal = { _clazz: clazz, _condition: options?.condition }
+	}
+}
+
+export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape<any> | DictionaryShape<any> | ArrayShape<any>
+	| UnionShape<any> | ClassShape<any>
 
 export const s = {
-	string: string,
-	number: number,
-	boolean: boolean,
-	literal: literal,
-	dictionary: dictionary,
-	array: array,
-	union: union,
-	class: clazz,
-	optional: optional,
-	integer: integer
+	string: getConstructFunction(StringShape),
+	number: getConstructFunction(NumberShape),
+	boolean: getConstructFunction(BooleanShape),
+	literal: getConstructFunction(LiteralShape),
+	dictionary: getConstructFunction(DictionaryShape),
+	array: getConstructFunction(ArrayShape),
+	union: getConstructFunction(UnionShape),
+	class: getConstructFunction(ClassShape),
+	optional: <T extends Shape>(shape: T) => new UnionShape([shape, new LiteralShape(undefined)]),
+	integer: (options?: { lowerBound?: number, upperBound?: number }) =>
+		new NumberShape({condition: Number.isInteger, lowerBound: options?.lowerBound, upperBound: options?.upperBound})
 }

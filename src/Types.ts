@@ -1,71 +1,8 @@
+import { ArrayShape, BooleanShape, ClassShape, DictionaryShape, LiteralShape, NumberShape, Shape, StringShape,
+	UnionShape } from "./Shapes"
+
 export type AnyClassConstructor<T = any> = new (...args: any[]) => T
 export type Literal = string | number | boolean | null | undefined
-
-export type StringShape = {
-	_internal: {
-		_type: "string",
-		_condition?: (value: string) => boolean
-	}
-}
-
-export type NumberShape = {
-	_internal: {
-		_type: "number",
-		_condition?: (entity: number) => boolean
-	}
-}
-
-export type BooleanShape = {
-	_internal: {
-		_type: "boolean"
-	}
-}
-
-export type LiteralShape = {
-	_internal: {
-		_type: "literal",
-		_data: Literal,
-	}
-	value: Literal
-}
-
-export type DictionaryShape = GenericDictionaryShape<any>
-
-export type GenericDictionaryShape<T extends { [key: string]: Shape }> = {
-	_internal: {
-		_type: "dictionary",
-		_data: T,
-		_condition?: (entity: T) => boolean,
-	}
-	keys: Array<keyof T>
-}
-
-export type ArrayShape = {
-	_internal: {
-		_type: "array",
-		_data: Shape,
-		_condition?: (entity: Array<any>) => boolean
-	}
-}
-
-export type UnionShape = {
-	_internal: {
-		_type: "union",
-		_data: Array<Shape>,
-	}
-	members: Array<Shape>
-}
-
-export type ClassShape = {
-	_internal: {
-		_type: "class",
-		_data: AnyClassConstructor,
-		_condition?: (entity: InstanceType<AnyClassConstructor>) => boolean
-	}
-}
-
-export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape | DictionaryShape
-	| ArrayShape | UnionShape | ClassShape
 
 type IncrDepth<Depth extends any[]> = [...Depth, never]
 
@@ -81,38 +18,12 @@ type D8 = IncrDepth<D7>
 
 export type ShapeToType<S extends Shape, Depth extends any[] = D0> =
 	Depth extends D8 ? any :
-	S extends { _internal: infer I } ? (
-		I extends { _type: infer T } ? (
-			T extends "string" ? string :
-			T extends "number" ? number :
-			T extends "boolean" ? boolean :
-			T extends "undefined" ? undefined :
-			I extends { _type: infer T, _data: infer D } ? (
-				T extends "literal" ? D extends Literal ? (
-					D
-				) : never :
-				T extends "dictionary" ? D extends { [key: string]: infer U extends Shape } ? (
-					{ [K in keyof D]: ShapeToType<D[K], IncrDepth<Depth>> }
-				) : never :
-				T extends "array" ? D extends Shape ? (
-					Array<ShapeToType<D, IncrDepth<Depth>>>
-				) : never :
-				T extends "union" ? D extends Array<Shape> ? (
-					ShapeToType<D[number], IncrDepth<Depth>>
-				) : never :
-				T extends "class" ? D extends AnyClassConstructor ? (
-					InstanceType<D>
-				) : never :
-				T extends "optional" ? D extends Shape ? (
-					D | undefined
-				) : never :
-				never
-			) : (
-				never
-			)
-		) : (
-			never
-		)
-	) : (
-		never
-	)
+	S extends StringShape ? string :
+	S extends NumberShape ? number :
+	S extends BooleanShape ? boolean :
+	S extends LiteralShape<any> ? S["_internal"]["_value"] :
+	S extends DictionaryShape<any> ? { [K in keyof S["_internal"]["_dictionary"]]: ShapeToType<S["_internal"]["_dictionary"][K], IncrDepth<Depth>> } :
+	S extends ArrayShape<any> ? Array<ShapeToType<S["_internal"]["_memberShape"], IncrDepth<Depth>>> :
+	S extends UnionShape<any> ? ShapeToType<S["_internal"]["_members"][number], IncrDepth<Depth>> :
+	S extends ClassShape<any> ? InstanceType<S["_internal"]["_clazz"]> :
+	never
