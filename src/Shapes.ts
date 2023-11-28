@@ -39,10 +39,10 @@ function literal<T extends Literal>(literal: T) {
 }
 
 function dictionary<T extends { [key: string]: Shape }>(dictionary: T,
-		options?: {condition?: (entity: { [key: string]: any }) => boolean}) {
+		options?: {condition?: (entity: T) => boolean}) {
 	return {
-		_internal: { _type: "dictionary" as "dictionary", _data: dictionary, _condition: options?.condition, },
-		keys: Object.keys(dictionary)
+		_internal: { _type: "dictionary" as "dictionary", _data: dictionary, _condition: options?.condition },
+		keys: Object.keys(dictionary) as Array<keyof T>
 	}
 }
 

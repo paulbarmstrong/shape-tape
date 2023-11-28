@@ -29,15 +29,15 @@ export type LiteralShape = {
 	value: Literal
 }
 
-export type DictionaryShape = {
+export type DictionaryShape<T extends { [key: string]: Shape }> = {
 	_internal: {
 		_type: "dictionary",
 		_data: {
 			[key: string]: Shape
 		},
-		_condition?: (entity: { [key: string]: any }) => boolean,
+		_condition?: (entity: T) => boolean,
 	}
-	keys: Array<string>
+	keys: Array<keyof T>
 }
 
 export type ArrayShape = {
@@ -64,7 +64,7 @@ export type ClassShape = {
 	}
 }
 
-export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape | DictionaryShape
+export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape | DictionaryShape<any>
 	| ArrayShape | UnionShape | ClassShape
 
 type IncrDepth<Depth extends any[]> = [...Depth, never]
