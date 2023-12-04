@@ -1,7 +1,7 @@
 ## shape-tape
 A TypeScript/JavaScript library to help with typing and runtime validation of structured data.
 
-## Notice
+### Notice
 Please note this package is brand new and highly experimental so breaking changes may be made without notice.
 
 ### Installation
