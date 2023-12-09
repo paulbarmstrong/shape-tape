@@ -59,6 +59,9 @@ export class DictionaryShape<T extends { [key: string]: Shape }> {
 	constructor(dictionary: T, options?: { condition?: (entity: T) => boolean }) {
 		this._internal = { _dictionary: dictionary, _condition: options?.condition }
 	}
+	dictionary(): T {
+		return { ...this._internal._dictionary }
+	}
 	keys(): Array<keyof T> {
 		return Object.keys(this._internal._dictionary)
 	}

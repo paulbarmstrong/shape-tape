@@ -4,6 +4,9 @@ describe("dictionary", () => {
 	test("keys", () => {
 		expect(s.dictionary({one: s.literal(1), two: s.literal(2)}).keys()).toStrictEqual(["one", "two"])
 	})
+	test("dictionary", () => {
+		expect(s.dictionary({one: s.literal(1), two: s.literal(2)}).dictionary()).toStrictEqual({one: s.literal(1), two: s.literal(2)})
+	})
 })
 
 describe("union", () => {

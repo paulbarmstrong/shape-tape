@@ -20,7 +20,7 @@ const resourceShape = s.dictionary({
 	createdAt: s.integer()
 })
 
-// Validate that some data matches your shape.
+// Validate that some object matches your shape.
 const goodData = JSON.parse("{\"id\":\"ui_1zoEJ18\",\"state\":\"active\",\"createdAt\":1700354795466}")
 const resource = validateObjectShape({ object: goodData, shape: resourceShape })
 
