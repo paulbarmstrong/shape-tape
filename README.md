@@ -11,7 +11,7 @@ npm install shape-tape
 
 ### Usage
 ```javascript
-import { s, validateShape } from "shape-tape"
+import { s, validateObjectShape } from "shape-tape"
 
 // Define a shape.
 const resourceShape = s.dictionary({
@@ -22,7 +22,7 @@ const resourceShape = s.dictionary({
 
 // Validate that some data matches your shape.
 const goodData = JSON.parse("{\"id\":\"ui_1zoEJ18\",\"state\":\"active\",\"createdAt\":1700354795466}")
-const resource = validateShape(goodData, resourceShape)
+const resource = validateObjectShape({ object: goodData, shape: resourceShape })
 
 // Safely access the validated and typed data.
 if (resource.state === "active") ...
@@ -31,7 +31,7 @@ if (resource.state === "active") ...
 
 // Data that doesn't match your shape causes a ShapeValidationError.
 const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
-const resource = validateShape(badData, resourceShape) // This causes ShapeValidationError
+const resource = validateObjectShape({ object: badData, shape: resourceShape }) // This causes ShapeValidationError
 ```
 
 If you're using TypeScript you can use the shape's TypeScript type.

@@ -27,9 +27,27 @@ export function getErrorMessage(path: Array<string | number>): string {
 	}
 }
 
-export function validateShape<T extends Shape>(entity: any, shape: T, options?: {error: (err: ShapeValidationError) => Error}): ShapeToType<T> {
+export function validateObjectShape<T extends Shape>(props: {
+	object: any,
+	shape: T
+	shapeValidationErrorOverride?: (err: ShapeValidationError) => Error
+}): ShapeToType<T> {
 	try {
-		validateShapeAux(entity, shape, [])
+		validateObjectShapeAux(props.object, props.shape, [])
+	} catch (error) {
+		if (error instanceof ShapeValidationError && props.shapeValidationErrorOverride !== undefined) {
+			throw props.shapeValidationErrorOverride(error)
+		} else {
+			throw error
+		}
+	}
+	return props.object as ShapeToType<T>
+}
+
+export function validateShape<T extends Shape>(entity: any, shape: T, options?: {error: (err: ShapeValidationError) => Error}): ShapeToType<T> {
+	console.warn("Function validateShape will be removed in a future version. Please use validateObjectShape.")
+	try {
+		validateObjectShapeAux(entity, shape, [])
 	} catch (error) {
 		if (error instanceof ShapeValidationError && options?.error !== undefined) {
 			throw options?.error(error)
@@ -40,7 +58,7 @@ export function validateShape<T extends Shape>(entity: any, shape: T, options?: 
 	return entity as ShapeToType<T>
 }
 
-export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: Array<string | number>) {
+export function validateObjectShapeAux<T extends Shape>(entity: any, shape: T, path: Array<string | number>) {
 	if (shape instanceof StringShape) {
 		if (typeof entity === "string") {
 			if (shape._internal._condition && !shape._internal._condition(entity)) throw new ShapeValidationError(path)
@@ -65,11 +83,11 @@ export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: A
 			}
 		})
 		Object.keys(shape._internal._dictionary).forEach(parameterKey => {
-			validateShapeAux(entity[parameterKey], (shape._internal._dictionary)[parameterKey], [...path, parameterKey])
+			validateObjectShapeAux(entity[parameterKey], (shape._internal._dictionary)[parameterKey], [...path, parameterKey])
 		})
 	} else if (shape instanceof ArrayShape) {
 		if (Array.isArray(entity)) {
-			entity.forEach((element, index) => validateShapeAux(element, shape._internal._memberShape, [...path, index]))
+			entity.forEach((element, index) => validateObjectShapeAux(element, shape._internal._memberShape, [...path, index]))
 			if (shape._internal._condition && !shape._internal._condition(entity)) throw new ShapeValidationError(path)
 		} else {
 			throw new ShapeValidationError(path)
@@ -77,7 +95,7 @@ export function validateShapeAux<T extends Shape>(entity: any, shape: T, path: A
 	} else if (shape instanceof UnionShape) {
 		const matchedMembers = (shape._internal._members as Array<Shape>).filter(member => {
 			try {
-				validateShapeAux(entity, member, path)
+				validateObjectShapeAux(entity, member, path)
 				return true
 			} catch (error) {
 				if (error instanceof ShapeValidationError) return false
