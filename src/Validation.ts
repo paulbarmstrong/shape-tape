@@ -44,20 +44,6 @@ export function validateObjectShape<T extends Shape>(props: {
 	return props.object as ShapeToType<T>
 }
 
-export function validateShape<T extends Shape>(entity: any, shape: T, options?: {error: (err: ShapeValidationError) => Error}): ShapeToType<T> {
-	console.warn("Function validateShape will be removed in a future version. Please use validateObjectShape.")
-	try {
-		validateObjectShapeAux(entity, shape, [])
-	} catch (error) {
-		if (error instanceof ShapeValidationError && options?.error !== undefined) {
-			throw options?.error(error)
-		} else {
-			throw error
-		}
-	}
-	return entity as ShapeToType<T>
-}
-
 export function validateObjectShapeAux<T extends Shape>(entity: any, shape: T, path: Array<string | number>) {
 	if (shape instanceof StringShape) {
 		if (typeof entity === "string") {
