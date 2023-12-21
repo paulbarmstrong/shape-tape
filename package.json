@@ -1,6 +1,6 @@
 {
 	"name": "shape-tape",
-	"version": "1.0.13",
+	"version": "1.0.14",
 	"main": "dist/src/index",
 	"typings": "dist/src/index",
 	"scripts": {

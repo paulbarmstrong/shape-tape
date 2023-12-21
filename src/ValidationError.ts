@@ -50,7 +50,7 @@ export class PatternReason implements ShapeValidationErrorReason {
 }
 
 export class ShapeValidationError extends Error {
-	readonly name = "ShapeValidationError"
+	name = "ShapeValidationError"
 	readonly path: Array<string | number>
 	readonly reason: ShapeValidationErrorReason
 	constructor(props: {
@@ -64,8 +64,7 @@ export class ShapeValidationError extends Error {
 }
 
 export function getErrorMessage(path: Array<string | number>, reason: ShapeValidationErrorReason): string {
-	const reasonString: string = getReasonString(reason)
-	return `Parameter${path.length > 0 ? ` ${getPathString(path)}` : ""} ${reasonString}.`
+	return `Parameter${path.length > 0 ? ` ${getPathString(path)}` : ""} ${getReasonString(reason)}.`
 }
 
 function getReasonString(reason: ShapeValidationErrorReason): string {
