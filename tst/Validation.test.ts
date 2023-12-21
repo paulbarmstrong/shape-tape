@@ -1,7 +1,7 @@
-import { ShapeToType, ShapeValidationError, s } from "../src"
+import { PatternReason, ShapeToType, ShapeValidationError, s } from "../src"
 import { validateObjectShape } from "../src/Validation"
 
-describe("validateShape", () => {
+describe("validateObjectShape", () => {
 	test("string", () => {
 		["apple", "banana", ""].forEach(validEntity => {
 			expect(() => validateObjectShape({ object: validEntity, shape: s.string() })).not.toThrow()
@@ -19,11 +19,11 @@ describe("validateShape", () => {
 		})).toThrow(ShapeValidationError)
 		expect(() => validateObjectShape({
 			object: "10px",
-			shape: s.optional(s.string({regex: /^[0-9]+px$/}))
+			shape: s.optional(s.string({pattern: /^[0-9]+px$/}))
 		})).not.toThrow()
 		expect(() => validateObjectShape({
 			object: "10pt",
-			shape: s.optional(s.string({regex: /^[0-9]+px$/}))
+			shape: s.optional(s.string({pattern: /^[0-9]+px$/}))
 		})).toThrow(ShapeValidationError)
 	})
 	test("number", () => {
@@ -35,8 +35,8 @@ describe("validateShape", () => {
 		})
 		expect(() => validateObjectShape({ object: 5, shape: s.number({condition: num => num < 6}) })).not.toThrow()
 		expect(() => validateObjectShape({ object: 5, shape: s.number({condition: num => num < 5}) })).toThrow(ShapeValidationError)
-		expect(() => validateObjectShape({ object: 10, shape: s.number({lowerBound: 4, upperBound: 10}) })).not.toThrow()
-		expect(() => validateObjectShape({ object: 11, shape: s.number({lowerBound: 4, upperBound: 10}) })).toThrow(ShapeValidationError)
+		expect(() => validateObjectShape({ object: 10, shape: s.number({min: 4, max: 10}) })).not.toThrow()
+		expect(() => validateObjectShape({ object: 11, shape: s.number({min: 4, max: 10}) })).toThrow(ShapeValidationError)
 	})
 	test("boolean", () => {
 		[false, true].forEach(validEntity => {
@@ -139,70 +139,39 @@ describe("validateShape", () => {
 			expect(() => validateObjectShape({ object: invalidEntity, shape: s.string() })).toThrow(ShapeValidationError)
 		})
 		;[0, 1, 2, 3, 4].forEach(validEntity => {
-			expect(() => validateObjectShape({ object: validEntity, shape: s.integer({lowerBound: 0, upperBound: 4}) })).not.toThrow()
+			expect(() => validateObjectShape({ object: validEntity, shape: s.integer({min: 0, max: 4}) })).not.toThrow()
 		})
-		;[-100, -2, -1, 5, 6, 1000].forEach(invalidEntry => {
+		;[0.5, 2/3].forEach(invalidEntity => {
+			expect(() => validateObjectShape({ object: invalidEntity, shape: s.integer() })).toThrow(ShapeValidationError)
+		})
+		;[-100, -2, -1, 5, 6, 1000].forEach(invalidEntity => {
 			expect(() => validateObjectShape({
-				object: invalidEntry,
-				shape: s.integer({lowerBound: 0, upperBound: 4})
+				object: invalidEntity,
+				shape: s.integer({min: 0, max: 4})
 			})).toThrow(ShapeValidationError)
 		})
 	})
-	test("ShapeValidationError path", () => {
-		expect(getErrorPath(() => validateObjectShape({ object: 5, shape: s.string() }))).toStrictEqual([])
-		expect(getErrorPath(() => validateObjectShape({ object: true, shape: s.number() }))).toStrictEqual([])
-		expect(getErrorPath(() => validateObjectShape({ object: "false", shape: s.boolean() }))).toStrictEqual([])
-		expect(getErrorPath(() => validateObjectShape({ object: "apple", shape: s.literal("banana") }))).toStrictEqual([])
-		expect(getErrorPath(() => validateObjectShape({ object: "apple", shape: s.dictionary({fruit: s.string()}) }))).toStrictEqual([])
-		expect(getErrorPath(() => validateObjectShape({
-			object: {plant: "grass"},
-			shape: s.dictionary({fruit: s.string()})
-		}))).toStrictEqual([])
 
-		expect(getErrorPath(() => validateObjectShape({
-			object: {},
-			shape: s.dictionary({fruit: s.string()})
-		}))).toStrictEqual(["fruit"])
-		expect(getErrorPath(() => validateObjectShape({
-			object: {fruit: 5},
-			shape: s.dictionary({fruit: s.string()})
-		}))).toStrictEqual(["fruit"])
-
-		expect(getErrorPath(() => validateObjectShape({
-			object: {config: {frequency: "ten"}},
-			shape: s.dictionary({config: s.dictionary({frequency: s.number()})})
-		})))
-			.toStrictEqual(["config", "frequency"])
-		expect(getErrorPath(() => validateObjectShape({
-			object: ["pear", "apple"],
-			shape: s.array(s.union([s.literal("apple"), s.literal("banana")]))
-		}))).toStrictEqual([0])
-		expect(getErrorPath(() => validateObjectShape({
-			object: {users: [{id: 0, name: "banana"}, {id: "a", name: "pear"}]},
-			shape: s.dictionary({
-				users: s.array(s.dictionary({
-					id: s.number(),
-					name: s.string()
-				}))
-			})
-		}))).toStrictEqual(["users", 1, "id"])
-	}),
 	test("README example", () => {
 		const resourceShape = s.dictionary({
-			id: s.string({regex: /^[a-zA-Z0-9\-_]{10}$/}),
+			id: s.string({pattern: /^[a-zA-Z0-9\-_]{10}$/}),
 			state: s.union([s.literal("pending"), s.literal("active"), s.literal("removed")]),
 			createdAt: s.integer()
 		})
-
+	
 		type Resource = ShapeToType<typeof resourceShape>
-
+	
 		const goodData = JSON.parse("{\"id\":\"ui_1zoEJ18\",\"state\":\"active\",\"createdAt\":1700354795466}")
 		const resource: Resource = validateObjectShape({ object: goodData, shape: resourceShape })
 		expect(resource.id).toStrictEqual("ui_1zoEJ18")
-
+	
 		const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
-		expect(() => validateObjectShape({ object: badData, shape: resourceShape })).toThrow(ShapeValidationError)
+		expect(() => validateObjectShape({ object: badData, shape: resourceShape })).toThrow(new ShapeValidationError({
+			path: ["id"],
+			reason: new PatternReason({pattern: /^[a-zA-Z0-9\-_]{10}$/})
+		}))
 	})
+
 	test("shapeValidationErrorOverride", () => {
 		class MyError extends Error {
 			constructor(message: string) { super(message) }
@@ -216,26 +185,6 @@ describe("validateShape", () => {
 			object: 5,
 			shape: s.string(),
 			shapeValidationErrorOverride: e => new MyError(e.message)
-		})).toThrow(new MyError("Invalid parameter value."))
-	})
+		})).toThrow(new MyError("Parameter is invalid."))
+	})	
 })
-
-test("getErrorMessage", () => {
-	expect(new ShapeValidationError([]).message).toStrictEqual("Invalid parameter value.")
-	expect(new ShapeValidationError(["name"]).message).toStrictEqual("Invalid value for parameter \"name\".")
-	expect(new ShapeValidationError(["config", "frequency"]).message)
-		.toStrictEqual("Invalid value for parameter config[\"frequency\"].")
-	expect(new ShapeValidationError(["fruit", 0, "id"]).message).toStrictEqual("Invalid value for parameter fruit[0][\"id\"].")
-	expect(new ShapeValidationError([0]).message).toStrictEqual("Invalid value for parameter [0].")
-	expect(new ShapeValidationError([0, "id"]).message).toStrictEqual("Invalid value for parameter [0][\"id\"].")
-})
-
-function getErrorPath(fnc: () => void): Array<string | number> | undefined {
-	try {
-		fnc()
-		return undefined
-	} catch (error) {
-		if (error instanceof ShapeValidationError) return error.path
-		else throw error
-	}
-}

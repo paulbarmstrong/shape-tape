@@ -1,40 +1,41 @@
 import { AnyClassConstructor, Literal } from "./Types"
-import { getConstructFunction, regexTest } from "./Utilities"
+import { getConstructFunction } from "./Utilities"
 
 export class StringShape {
 	#classname = "StringShape"
-	_internal: { _condition?: (value: string) => boolean }
-	constructor(options?: { condition?: (entity: string) => boolean, regex?: RegExp }) {
-		const regex: RegExp | undefined = options?.regex !== undefined ? (
-			new RegExp(options!.regex!)
-		) : (
-			undefined
-		)
-		const condition = options?.condition !== undefined || regex !== undefined ? (
-			(entity: string) => {
-				return (options?.condition === undefined || options.condition(entity)) && (regex === undefined || regexTest(regex, entity))
-			}
-		) : (
-			undefined
-		)
-		this._internal = { _condition: condition }
+	readonly minLength?: number
+	readonly maxLength?: number
+	readonly pattern?: RegExp
+	readonly condition?: (object: string) => boolean
+	constructor(options?: {
+		minLength?: number,
+		maxLength?: number,
+		pattern?: RegExp,
+		condition?: (object: string) => boolean
+	}) {
+		this.minLength = options?.minLength,
+		this.maxLength = options?.maxLength,
+		this.pattern = options?.pattern ? new RegExp(options.pattern) : undefined
+		this.condition = options?.condition
 	}
 }
 
 export class NumberShape {
 	#classname = "NumberShape"
-	_internal: { _condition?: (entity: number) => boolean }
-	constructor(options?: { condition?: (entity: number) => boolean, lowerBound?: number, upperBound?: number }) {
-		const condition = options?.condition !== undefined || options?.lowerBound !== undefined || options?.upperBound !== undefined ? (
-			(entity: number) => {
-				return (options?.condition === undefined || options.condition(entity)) &&
-					(options?.lowerBound === undefined || entity >= options?.lowerBound) &&
-					(options?.upperBound === undefined || entity <= options?.upperBound)
-			}
-		) : (
-			undefined
-		)
-		this._internal = { _condition: condition }
+	readonly min?: number
+	readonly max?: number
+	readonly integer?: boolean
+	readonly condition?: (object: number) => boolean
+	constructor(options?: {
+		min?: number,
+		max?: number,
+		integer?: boolean
+		condition?: (object: number) => boolean,
+	}) {
+		this.min = options?.min
+		this.max = options?.max
+		this.integer = options?.integer
+		this.condition = options?.condition
 	}
 }
 
@@ -44,53 +45,46 @@ export class BooleanShape {
 
 export class LiteralShape<T extends Literal> {
 	#classname = "LiteralShape"
-	_internal: { _value: T }
+	readonly value: T 
 	constructor(value: T) {
-		this._internal = { _value: value }
-	}
-	value(): T {
-		return this._internal._value
+		this.value = value
 	}
 }
 
 export class DictionaryShape<T extends { [key: string]: Shape }> {
 	#classname = "DictionaryShape"
-	_internal: { _dictionary: T, _condition?: (entity: T) => boolean }
-	constructor(dictionary: T, options?: { condition?: (entity: T) => boolean }) {
-		this._internal = { _dictionary: dictionary, _condition: options?.condition }
-	}
-	dictionary(): T {
-		return { ...this._internal._dictionary }
-	}
-	keys(): Array<keyof T> {
-		return Object.keys(this._internal._dictionary)
+	readonly dictionary: T
+	readonly condition?: (object: T) => boolean
+	constructor(dictionary: T, options?: { condition?: (object: T) => boolean }) {
+		this.dictionary = dictionary,
+		this.condition = options?.condition
 	}
 }
 
 export class ArrayShape<T extends Shape> {
 	#classname = "ArrayShape"
-	_internal: { _memberShape: T, _condition?: (entity: Array<T>) => boolean }
-	constructor(shape: T, options?: { condition?: (entity: Array<T>) => boolean }) {
-		this._internal = { _memberShape: shape, _condition: options?.condition }
+	readonly elementShape: T
+	readonly condition?: (object: Array<T>) => boolean
+	constructor(elementShape: T, options?: { condition?: (object: Array<T>) => boolean }) {
+		this.elementShape = elementShape
+		this.condition = options?.condition
 	}
 }
 
 export class UnionShape<T extends Array<Shape>> {
 	#classname = "UnionShape"
-	_internal: { _members: T }
+	readonly members: T
 	constructor(members: T) {
-		this._internal = { _members: members }
-	}
-	members(): T {
-		return this._internal._members
+		this.members = members
 	}
 }
 
 export class ClassShape<T extends AnyClassConstructor> {
-	#classname = "ClassShape"
-	_internal: { _clazz: T, _condition?: (instance: InstanceType<T>) => boolean }
+	readonly clazz: T
+	readonly condition?: (instance: InstanceType<T>) => boolean
 	constructor(clazz: T, options?: { condition?: (instance: InstanceType<T>) => boolean }) {
-		this._internal = { _clazz: clazz, _condition: options?.condition }
+		this.clazz = clazz,
+		this.condition = options?.condition
 	}
 }
 
@@ -107,6 +101,6 @@ export const s = {
 	union: getConstructFunction(UnionShape),
 	class: getConstructFunction(ClassShape),
 	optional: <T extends Shape>(shape: T) => new UnionShape([shape, new LiteralShape(undefined)]),
-	integer: (options?: { lowerBound?: number, upperBound?: number }) =>
-		new NumberShape({condition: Number.isInteger, lowerBound: options?.lowerBound, upperBound: options?.upperBound})
+	integer: (options?: { min?: number, max?: number }) =>
+		new NumberShape({ min: options?.min, max: options?.max, integer: true })
 }

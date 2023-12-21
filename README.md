@@ -31,7 +31,8 @@ if (resource.state === "active") ...
 
 // Data that doesn't match your shape causes a ShapeValidationError.
 const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
-const resource = validateObjectShape({ object: badData, shape: resourceShape }) // This causes ShapeValidationError
+const resource = validateObjectShape({ object: badData, shape: resourceShape })
+// This causes ShapeValidationError("Parameter \"id\" must match the pattern /^[a-zA-Z0-9\-_]{10}$/.")
 ```
 
 If you're using TypeScript you can use the shape's TypeScript type.
