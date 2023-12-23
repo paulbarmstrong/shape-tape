@@ -8,13 +8,16 @@ export class StringShape {
 	readonly pattern?: RegExp
 	readonly condition?: (object: string) => boolean
 	constructor(options?: {
+		length?: number,
 		minLength?: number,
 		maxLength?: number,
 		pattern?: RegExp,
 		condition?: (object: string) => boolean
 	}) {
-		this.minLength = options?.minLength,
-		this.maxLength = options?.maxLength,
+		if (options?.length !== undefined && (options.minLength !== undefined || options.maxLength !== undefined))
+			throw new Error("Cannot specify length and minLength or maxLength.")
+		this.minLength = options?.length !== undefined ? options.length : options?.minLength,
+		this.maxLength = options?.length !== undefined ? options.length : options?.maxLength,
 		this.pattern = options?.pattern ? new RegExp(options.pattern) : undefined
 		this.condition = options?.condition
 	}
