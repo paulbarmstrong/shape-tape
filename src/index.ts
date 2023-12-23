@@ -2,5 +2,4 @@ export { Shape, StringShape, NumberShape, BooleanShape, LiteralShape, Dictionary
 	ClassShape, s } from "./Shapes"
 export { ShapeToType } from "./Types"
 export { validateObjectShape } from "./Validation"
-export { ShapeValidationError, ShapeValidationErrorReason, GenericReason, MinLengthReason, MaxLengthReason, MinReason, MaxReason,
-	IntegerReason, PatternReason } from "./ValidationError"
+export { ShapeValidationError } from "./ValidationError"

@@ -1,42 +1,65 @@
-import { PatternReason, ShapeToType, ShapeValidationError, s } from "../src"
+import { ShapeToType, ShapeValidationError, s } from "../src"
 import { validateObjectShape } from "../src/Validation"
 
 describe("validateObjectShape", () => {
-	test("string", () => {
-		["apple", "banana", ""].forEach(validEntity => {
-			expect(() => validateObjectShape({ object: validEntity, shape: s.string() })).not.toThrow()
+	describe("string", () => {
+		test("no options", () => {
+			["apple", "banana", ""].forEach(validEntity => {
+				expect(() => validateObjectShape({ object: validEntity, shape: s.string() })).not.toThrow()
+			})
+			;[true, false, null, undefined, {}, {a: "b"}, [], [5, "b"], new Map(), 5].forEach((invalidEntity: any) => {
+				expect(() => validateObjectShape({ object: invalidEntity, shape: s.string() })).toThrow(ShapeValidationError)
+			})
 		})
-		;[true, false, null, undefined, {}, {a: "b"}, [], [5, "b"], new Map(), 5].forEach((invalidEntity: any) => {
-			expect(() => validateObjectShape({ object: invalidEntity, shape: s.string() })).toThrow(ShapeValidationError)
+		test("length option", () => {
+			expect(() => validateObjectShape({object: "pear", shape: s.string({length: 4})})).not.toThrow()
+			expect(() => validateObjectShape({object: "pear", shape: s.string({length: 3})})).toThrow(ShapeValidationError)
 		})
-		expect(() => validateObjectShape({
-			object: "apple",
-			shape: s.string({condition: str => str.length === 5})
-		})).not.toThrow()
-		expect(() => validateObjectShape({
-			object: "apple",
-			shape: s.string({condition: str => str.length === 6})
-		})).toThrow(ShapeValidationError)
-		expect(() => validateObjectShape({
-			object: "10px",
-			shape: s.optional(s.string({pattern: /^[0-9]+px$/}))
-		})).not.toThrow()
-		expect(() => validateObjectShape({
-			object: "10pt",
-			shape: s.optional(s.string({pattern: /^[0-9]+px$/}))
-		})).toThrow(ShapeValidationError)
+		test("minLength option", () => {
+			const shape = s.string({minLength: 5})
+			expect(() => validateObjectShape({object: "pear", shape: shape})).toThrow(ShapeValidationError)
+			expect(() => validateObjectShape({object: "apple", shape: shape})).not.toThrow()
+			expect(() => validateObjectShape({object: "banana", shape: shape})).not.toThrow()
+		})
+		test("maxLength option", () => {
+			const shape = s.string({maxLength: 5})
+			expect(() => validateObjectShape({object: "pear", shape: shape})).not.toThrow()
+			expect(() => validateObjectShape({object: "apple", shape: shape})).not.toThrow()
+			expect(() => validateObjectShape({object: "banana", shape: shape})).toThrow(ShapeValidationError)
+		})
+		test("condition option", () => {
+			const shape = s.string({condition: str => str.length === 5})
+			expect(() => validateObjectShape({object: "pear", shape: shape})).toThrow(ShapeValidationError)
+			expect(() => validateObjectShape({object: "apple", shape: shape})).not.toThrow()
+			expect(() => validateObjectShape({object: "banana", shape: shape})).toThrow(ShapeValidationError)
+		})
+		test("pattern option", () => {
+			const shape = s.string({pattern: /^[0-9]+px$/})
+			expect(() => validateObjectShape({object: "10px", shape: shape})).not.toThrow()
+			expect(() => validateObjectShape({object: "10pt", shape: shape})).toThrow(ShapeValidationError)
+		})
 	})
-	test("number", () => {
-		[-10, 0, 1.5, 81, 13/6].forEach(validEntity => {
-			expect(() => validateObjectShape({ object: validEntity, shape: s.number() })).not.toThrow()
+	describe("number", () => {
+		test("no options", () => {
+			[-10, 0, 1.5, 81, 13/6].forEach(validEntity => {
+				expect(() => validateObjectShape({ object: validEntity, shape: s.number() })).not.toThrow()
+			})
+			;["apple", "", true, false, null, undefined, {}, {a: "b"}, [], [5, 6], new Map()].forEach((invalidEntity: any) => {
+				expect(() => validateObjectShape({ object: invalidEntity, shape: s.number() })).toThrow(ShapeValidationError)
+			})
 		})
-		;["apple", "", true, false, null, undefined, {}, {a: "b"}, [], [5, 6], new Map()].forEach((invalidEntity: any) => {
-			expect(() => validateObjectShape({ object: invalidEntity, shape: s.number() })).toThrow(ShapeValidationError)
+		test("condition option", () => {
+			expect(() => validateObjectShape({ object: 5, shape: s.number({condition: num => num < 6}) })).not.toThrow()
+			expect(() => validateObjectShape({ object: 5, shape: s.number({condition: num => num < 5}) })).toThrow(ShapeValidationError)
 		})
-		expect(() => validateObjectShape({ object: 5, shape: s.number({condition: num => num < 6}) })).not.toThrow()
-		expect(() => validateObjectShape({ object: 5, shape: s.number({condition: num => num < 5}) })).toThrow(ShapeValidationError)
-		expect(() => validateObjectShape({ object: 10, shape: s.number({min: 4, max: 10}) })).not.toThrow()
-		expect(() => validateObjectShape({ object: 11, shape: s.number({min: 4, max: 10}) })).toThrow(ShapeValidationError)
+		test("min/max options", () => {
+			const shape = s.number({min: 4, max: 10})
+			expect(() => validateObjectShape({ object: 0, shape: shape })).toThrow(ShapeValidationError)
+			expect(() => validateObjectShape({ object: 3, shape: shape })).toThrow(ShapeValidationError)
+			expect(() => validateObjectShape({ object: 4, shape: shape })).not.toThrow()
+			expect(() => validateObjectShape({ object: 10, shape: shape })).not.toThrow()
+			expect(() => validateObjectShape({ object: 11, shape: shape })).toThrow(ShapeValidationError)
+		})
 	})
 	test("boolean", () => {
 		[false, true].forEach(validEntity => {
@@ -168,7 +191,8 @@ describe("validateObjectShape", () => {
 		const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
 		expect(() => validateObjectShape({ object: badData, shape: resourceShape })).toThrow(new ShapeValidationError({
 			path: ["id"],
-			reason: new PatternReason({pattern: /^[a-zA-Z0-9\-_]{10}$/})
+			object: "",
+			shape: s.string({pattern: /^[a-zA-Z0-9\-_]{10}$/})
 		}))
 	})
 
