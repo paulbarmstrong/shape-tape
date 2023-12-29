@@ -6,7 +6,7 @@ import { ShapeValidationError } from "./ValidationError"
 /**
  * Validates that the given data matches the given Shape.
  * @returns The validated data casted to the appropriate type.
- * @throws [ShapeValidationError](./ShapeValidationError.md) when the data doesn't match the Shape.
+ * @throws [ShapeValidationError](classes/ShapeValidationError.md) when the data doesn't match the Shape.
  */
 export function validateObjectShape<T extends Shape>(params: {
 	/**Data to be validated. */
