@@ -39,7 +39,7 @@ Shape representing a JavaScript array
 | :------ | :------ | :------ |
 | `elementShape` | `T` | The Shape of the elements of the array. |
 | `options?` | `Object` | Optional parameters for the Shape. |
-| `options.condition?` | (`object`: `T`[]) => `boolean` | Adds a customizable constraint. |
+| `options.condition?` | (`data`: `T`[]) => `boolean` | Adds a customizable constraint. |
 
 #### Returns
 
@@ -47,17 +47,17 @@ Shape representing a JavaScript array
 
 #### Defined in
 
-[src/Shapes.ts:125](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L125)
+[src/Shapes.ts:125](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L125)
 
 ## Properties
 
 ### condition
 
-• `Optional` `Readonly` **condition**: (`object`: `T`[]) => `boolean`
+• `Optional` `Readonly` **condition**: (`data`: `T`[]) => `boolean`
 
 #### Type declaration
 
-▸ (`object`): `boolean`
+▸ (`data`): `boolean`
 
 Contains the value of the `condition` constructor parameter.
 
@@ -65,7 +65,7 @@ Contains the value of the `condition` constructor parameter.
 
 | Name | Type |
 | :------ | :------ |
-| `object` | `T`[] |
+| `data` | `T`[] |
 
 ##### Returns
 
@@ -73,7 +73,7 @@ Contains the value of the `condition` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:119](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L119)
+[src/Shapes.ts:119](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L119)
 
 ___
 
@@ -85,4 +85,4 @@ Contains the value of the `elementShape` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:117](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L117)
+[src/Shapes.ts:117](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L117)

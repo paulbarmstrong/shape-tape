@@ -12,7 +12,7 @@ export class StringShape {
 	/** Contains the value of the `pattern` constructor option. */
 	readonly pattern?: RegExp
 	/** Contains the value of the `condition` constructor option. */
-	readonly condition?: (object: string) => boolean
+	readonly condition?: (data: string) => boolean
 
 	/** @param options Optional parameters for the Shape. */
 	constructor(options?: {
@@ -25,7 +25,7 @@ export class StringShape {
 		/** Adds a regular expression constraint. */
 		pattern?: RegExp,
 		/** Adds a customizable constraint. */
-		condition?: (object: string) => boolean
+		condition?: (data: string) => boolean
 	}) {
 		if (options?.length !== undefined && (options.minLength !== undefined || options.maxLength !== undefined))
 			throw new Error("Cannot specify length and minLength or maxLength.")
@@ -47,7 +47,7 @@ export class NumberShape {
 	/** Contains the value of the `integer` constructor option. */
 	readonly integer?: boolean
 	/** Contains the value of the `condition` constructor option. */
-	readonly condition?: (object: number) => boolean
+	readonly condition?: (data: number) => boolean
 
 	/** @param options Optional parameters for the Shape. */
 	constructor(options?: {
@@ -58,7 +58,7 @@ export class NumberShape {
 		/** Adds a constraint that the number must be an integer. */
 		integer?: boolean
 		/** Adds a customizable constraint. */
-		condition?: (object: number) => boolean,
+		condition?: (data: number) => boolean,
 	}) {
 		this.min = options?.min
 		this.max = options?.max
@@ -87,24 +87,24 @@ export class LiteralShape<T extends string | number | boolean | null | undefined
 	}
 }
 
-/** Shape representing a regular JavaScript `object` with keys and values. */
-export class DictionaryShape<T extends { [key: string]: Shape }> {
+/** Shape representing a regular JavaScript `object` having keys and values. */
+export class ObjectShape<T extends { [key: string]: Shape }> {
 	/** @hidden */
-	#classname = "DictionaryShape"
-	/** Contains the value of the `dictionary` constructor parameter. */
-	readonly dictionary: T
+	#classname = "ObjectShape"
+	/** Contains the value of the `object` constructor parameter. */
+	readonly object: T
 	/** Contains the value of the `condition` constructor option. */
-	readonly condition?: (object: T) => boolean
+	readonly condition?: (data: T) => boolean
 	/** 
-	 * @param dictionary A dictionary where the keys are the keys of the dictionary the Shape should 
+	 * @param object An object where the keys are the keys of the object the Shape should 
 	 * represent, and the values are the Shapes of the values the Shape should represent.
 	 * @param options Optional parameters for the Shape.
 	 */
-	constructor(dictionary: T, options?: {
+	constructor(object: T, options?: {
 		/** Adds a customizable constraint. */
-		condition?: (object: T) => boolean
+		condition?: (data: T) => boolean
 	}) {
-		this.dictionary = dictionary,
+		this.object = object,
 		this.condition = options?.condition
 	}
 }
@@ -116,7 +116,7 @@ export class ArrayShape<T extends Shape> {
 	/** Contains the value of the `elementShape` constructor parameter. */
 	readonly elementShape: T
 	/** Contains the value of the `condition` constructor parameter. */
-	readonly condition?: (object: Array<T>) => boolean
+	readonly condition?: (data: Array<T>) => boolean
 	
 	/** 
 	 * @param elementShape The Shape of the elements of the array.
@@ -124,7 +124,7 @@ export class ArrayShape<T extends Shape> {
 	 */
 	constructor(elementShape: T, options?: {
 		/** Adds a customizable constraint. */
-		condition?: (object: Array<T>) => boolean
+		condition?: (data: Array<T>) => boolean
 	}) {
 		this.elementShape = elementShape
 		this.condition = options?.condition
@@ -151,14 +151,14 @@ export class ClassShape<T extends AnyClassConstructor> {
 	/** Contains the value of the `clazz` constructor parameter. */
 	readonly clazz: T
 	/** Contains the value of the `clazz` constructor option. */
-	readonly condition?: (instance: InstanceType<T>) => boolean
+	readonly condition?: (data: InstanceType<T>) => boolean
 	/** 
 	 * @param clazz The class that the Shape should represent.
 	 * @param options Optional parameters for the Shape.
 	 */
 	constructor(clazz: T, options?: {
 		/** Adds a customizable constraint. */
-		condition?: (instance: InstanceType<T>) => boolean
+		condition?: (data: InstanceType<T>) => boolean
 	}) {
 		this.clazz = clazz,
 		this.condition = options?.condition
@@ -166,7 +166,7 @@ export class ClassShape<T extends AnyClassConstructor> {
 }
 
 /** Type representing any Shape. It's a union of all Shape classes. */
-export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape<any> | DictionaryShape<any> | ArrayShape<any>
+export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape<any> | ObjectShape<any> | ArrayShape<any>
 	| UnionShape<any> | ClassShape<any>
 
 /**
@@ -181,8 +181,8 @@ export const s = {
 	boolean: getConstructFunction(BooleanShape),
 	/** Alias for the `LiteralShape` constructor. */
 	literal: getConstructFunction(LiteralShape),
-	/** Alias for the `DictionaryShape` constructor. */
-	dictionary: getConstructFunction(DictionaryShape),
+	/** Alias for the `ObjectShape` constructor. */
+	object: getConstructFunction(ObjectShape),
 	/** Alias for the `ArrayShape` constructor. */
 	array: getConstructFunction(ArrayShape),
 	/** Alias for the `UnionShape` constructor. */

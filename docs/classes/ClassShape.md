@@ -39,7 +39,7 @@ Shape representing a JavaScript class.
 | :------ | :------ | :------ |
 | `clazz` | `T` | The class that the Shape should represent. |
 | `options?` | `Object` | Optional parameters for the Shape. |
-| `options.condition?` | (`instance`: `InstanceType`\<`T`\>) => `boolean` | Adds a customizable constraint. |
+| `options.condition?` | (`data`: `InstanceType`\<`T`\>) => `boolean` | Adds a customizable constraint. |
 
 #### Returns
 
@@ -47,7 +47,7 @@ Shape representing a JavaScript class.
 
 #### Defined in
 
-[src/Shapes.ts:159](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L159)
+[src/Shapes.ts:159](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L159)
 
 ## Properties
 
@@ -59,17 +59,17 @@ Contains the value of the `clazz` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:152](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L152)
+[src/Shapes.ts:152](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L152)
 
 ___
 
 ### condition
 
-• `Optional` `Readonly` **condition**: (`instance`: `InstanceType`\<`T`\>) => `boolean`
+• `Optional` `Readonly` **condition**: (`data`: `InstanceType`\<`T`\>) => `boolean`
 
 #### Type declaration
 
-▸ (`instance`): `boolean`
+▸ (`data`): `boolean`
 
 Contains the value of the `clazz` constructor option.
 
@@ -77,7 +77,7 @@ Contains the value of the `clazz` constructor option.
 
 | Name | Type |
 | :------ | :------ |
-| `instance` | `InstanceType`\<`T`\> |
+| `data` | `InstanceType`\<`T`\> |
 
 ##### Returns
 
@@ -85,4 +85,4 @@ Contains the value of the `clazz` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:154](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L154)
+[src/Shapes.ts:154](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L154)

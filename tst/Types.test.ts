@@ -41,13 +41,13 @@ describe("ShapeToType", () => {
 			const assertion: AssertEqual<ShapeToType<typeof shape>, undefined> = true
 		})
 	})
-	describe("DictionaryShape", () => {
+	describe("ObjectShape", () => {
 		test("empty", () => {
-			const shape = s.dictionary({})
+			const shape = s.object({})
 			const assertion: AssertEqual<ShapeToType<typeof shape>, {}> = true
 		})
 		test("with parameters", () => {
-			const shape = s.dictionary({
+			const shape = s.object({
 				id: s.string(),
 				updatedAt: s.integer(),
 				status: s.union([s.literal("available"), s.literal("deleted")]),

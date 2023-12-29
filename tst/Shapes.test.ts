@@ -1,8 +1,8 @@
 import { s } from "../src"
 
-describe("dictionary", () => {
-	test("dictionary", () => {
-		expect(s.dictionary({one: s.literal(1), two: s.literal(2)}).dictionary).toStrictEqual({one: s.literal(1), two: s.literal(2)})
+describe("object", () => {
+	test("object", () => {
+		expect(s.object({one: s.literal(1), two: s.literal(2)}).object).toStrictEqual({one: s.literal(1), two: s.literal(2)})
 	})
 })
 

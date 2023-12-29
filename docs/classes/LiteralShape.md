@@ -45,7 +45,7 @@ or `undefined`.
 
 #### Defined in
 
-[src/Shapes.ts:85](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L85)
+[src/Shapes.ts:85](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L85)
 
 ## Properties
 
@@ -57,4 +57,4 @@ Contains the value of the `value` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:82](https://github.com/paulbarmstrong/shape-tape/blob/f34d799/src/Shapes.ts#L82)
+[src/Shapes.ts:82](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L82)

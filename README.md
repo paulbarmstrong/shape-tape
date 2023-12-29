@@ -7,7 +7,7 @@ Please note this package is brand new and highly experimental so breaking change
 
 A TypeScript/JavaScript library to help with runtime validation of structured data.
 
-Consumers define Shapes that represent the structure of their data. Consumers call `validateObjectShape` to validate some data matches their Shape and assign the appropriate type.
+Consumers define Shapes that represent the structure of their data. Consumers call `validateDataShape` to validate some data matches their Shape.
 
 ### Installation
 ```
@@ -20,7 +20,7 @@ npm install shape-tape
 import { s, validateObjectShape } from "shape-tape"
 
 // Define a shape.
-const resourceShape = s.dictionary({
+const resourceShape = s.object({
 	id: s.string({regex: /^[a-zA-Z0-9\-_]{10}$/}),
 	state: s.union([s.literal("pending"), s.literal("active"), s.literal("removed")]),
 	createdAt: s.integer()
@@ -28,7 +28,7 @@ const resourceShape = s.dictionary({
 
 // Validate that some object matches your shape.
 const goodData = JSON.parse("{\"id\":\"ui_1zoEJ18\",\"state\":\"active\",\"createdAt\":1700354795466}")
-const resource = validateObjectShape({ object: goodData, shape: resourceShape })
+const resource = validateDataShape({ data: goodData, shape: resourceShape })
 
 // Safely access the validated and typed data.
 if (resource.state === "active") ...
@@ -37,7 +37,7 @@ if (resource.state === "active") ...
 
 // Data that doesn't match your shape causes a ShapeValidationError.
 const badData = JSON.parse("{\"id\":\"\",\"state\":\"active\",\"createdAt\":1700354795466}")
-const resource = validateObjectShape({ object: badData, shape: resourceShape })
+const resource = validateDataShape({ data: badData, shape: resourceShape })
 // ^ throws ShapeValidationError "Parameter \"id\" is invalid."
 ```
 
@@ -51,6 +51,8 @@ type Resource = ShapeToType<typeof resourceShape>
 
 const resource: Resource = ...
 ```
+
+Please see [the unit test demonstrating this example](https://github.com/paulbarmstrong/shape-tape/blob/main/tst/README.test.ts).
 
 ### Documentation
 
