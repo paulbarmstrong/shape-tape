@@ -3,21 +3,29 @@ import { ShapeToType } from "./Types"
 import { regexTest } from "./Utilities"
 import { ShapeValidationError } from "./ValidationError"
 
-export function validateObjectShape<T extends Shape>(props: {
+/**
+ * Validates that the given data matches the given Shape.
+ * @returns The validated data casted to the appropriate type.
+ * @throws [ShapeValidationError](./ShapeValidationError.md) when the data doesn't match the Shape.
+ */
+export function validateObjectShape<T extends Shape>(params: {
+	/**Data to be validated. */
 	object: any,
+	/** Shape to validate the data against. */
 	shape: T
+	/** Optional function for overriding the Error thrown in the case of a shape validation error */
 	shapeValidationErrorOverride?: (err: ShapeValidationError) => Error
 }): ShapeToType<T> {
 	try {
-		validateObjectShapeAux(props.object, props.shape, [])
+		validateObjectShapeAux(params.object, params.shape, [])
 	} catch (error) {
-		if (error instanceof ShapeValidationError && props.shapeValidationErrorOverride !== undefined) {
-			throw props.shapeValidationErrorOverride(error)
+		if (error instanceof ShapeValidationError && params.shapeValidationErrorOverride !== undefined) {
+			throw params.shapeValidationErrorOverride(error)
 		} else {
 			throw error
 		}
 	}
-	return props.object as ShapeToType<T>
+	return params.object as ShapeToType<T>
 }
 
 export function validateObjectShapeAux<T extends Shape>(entity: any, shape: T, path: Array<string | number>) {

@@ -1,8 +1,13 @@
 ## shape-tape
-A TypeScript/JavaScript library to help with typing and runtime validation of structured data.
 
 ### Notice
 Please note this package is brand new and highly experimental so breaking changes may be made without notice.
+
+### About
+
+A TypeScript/JavaScript library to help with runtime validation of structured data.
+
+Consumers define Shapes that represent the structure of their data. Consumers call `validateObjectShape` to validate some data matches their Shape and assign the appropriate type.
 
 ### Installation
 ```
@@ -10,6 +15,7 @@ npm install shape-tape
 ```
 
 ### Usage
+
 ```javascript
 import { s, validateObjectShape } from "shape-tape"
 
@@ -45,3 +51,7 @@ type Resource = ShapeToType<typeof resourceShape>
 
 const resource: Resource = ...
 ```
+
+### Documentation
+
+Please see [the low level documentation](https://github.com/paulbarmstrong/shape-tape/blob/main/docs/index.md) for more details.
