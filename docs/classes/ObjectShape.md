@@ -47,7 +47,7 @@ Shape representing a regular JavaScript `object` having keys and values.
 
 #### Defined in
 
-[src/Shapes.ts:103](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L103)
+[src/Shapes.ts:103](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L103)
 
 ## Properties
 
@@ -73,7 +73,7 @@ Contains the value of the `condition` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:97](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L97)
+[src/Shapes.ts:97](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L97)
 
 ___
 
@@ -85,4 +85,4 @@ Contains the value of the `object` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:95](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L95)
+[src/Shapes.ts:95](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L95)

@@ -40,7 +40,7 @@ Shape representing JavaScript `string`.
 
 #### Defined in
 
-[src/Shapes.ts:18](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L18)
+[src/Shapes.ts:18](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L18)
 
 ## Properties
 
@@ -66,7 +66,7 @@ Contains the value of the `condition` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:15](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L15)
+[src/Shapes.ts:15](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L15)
 
 ___
 
@@ -78,7 +78,7 @@ Contains the value of the `maxLength` constructor option or length constructor o
 
 #### Defined in
 
-[src/Shapes.ts:11](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L11)
+[src/Shapes.ts:11](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L11)
 
 ___
 
@@ -90,7 +90,7 @@ Contains the value of the `minLength` constructor option or length constructor o
 
 #### Defined in
 
-[src/Shapes.ts:9](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L9)
+[src/Shapes.ts:9](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L9)
 
 ___
 
@@ -102,4 +102,4 @@ Contains the value of the `pattern` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:13](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L13)
+[src/Shapes.ts:13](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L13)

@@ -57,7 +57,7 @@ Error.constructor
 
 #### Defined in
 
-[src/ValidationError.ts:15](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/ValidationError.ts#L15)
+[src/ValidationError.ts:15](https://github.com/paulbarmstrong/shape-tape/blob/main/src/ValidationError.ts#L15)
 
 ## Properties
 
@@ -83,7 +83,7 @@ The most specific data which was found to not match the corresponding Shape.
 
 #### Defined in
 
-[src/ValidationError.ts:11](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/ValidationError.ts#L11)
+[src/ValidationError.ts:11](https://github.com/paulbarmstrong/shape-tape/blob/main/src/ValidationError.ts#L11)
 
 ___
 
@@ -111,7 +111,7 @@ Error.name
 
 #### Defined in
 
-[src/ValidationError.ts:7](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/ValidationError.ts#L7)
+[src/ValidationError.ts:7](https://github.com/paulbarmstrong/shape-tape/blob/main/src/ValidationError.ts#L7)
 
 ___
 
@@ -123,7 +123,7 @@ The path to where in the data the error occurred.
 
 #### Defined in
 
-[src/ValidationError.ts:9](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/ValidationError.ts#L9)
+[src/ValidationError.ts:9](https://github.com/paulbarmstrong/shape-tape/blob/main/src/ValidationError.ts#L9)
 
 ___
 
@@ -135,7 +135,7 @@ The specific Shape which the data did not match.
 
 #### Defined in
 
-[src/ValidationError.ts:13](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/ValidationError.ts#L13)
+[src/ValidationError.ts:13](https://github.com/paulbarmstrong/shape-tape/blob/main/src/ValidationError.ts#L13)
 
 ___
 

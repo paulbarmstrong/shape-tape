@@ -41,7 +41,7 @@ Type representing any Shape. It's a union of all Shape classes.
 
 #### Defined in
 
-[src/Shapes.ts:169](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L169)
+[src/Shapes.ts:169](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L169)
 
 ___
 
@@ -59,7 +59,7 @@ Utility type for converting Shapes to the static types they represent.
 
 #### Defined in
 
-[src/Types.ts:18](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Types.ts#L18)
+[src/Types.ts:18](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Types.ts#L18)
 
 ## Variables
 
@@ -86,7 +86,7 @@ A collection of convenience functions for creating Shapes.
 
 #### Defined in
 
-[src/Shapes.ts:175](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L175)
+[src/Shapes.ts:175](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L175)
 
 ## Functions
 
@@ -123,4 +123,4 @@ The validated data casted to the appropriate type.
 
 #### Defined in
 
-[src/Validation.ts:11](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Validation.ts#L11)
+[src/Validation.ts:11](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Validation.ts#L11)

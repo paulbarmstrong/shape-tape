@@ -45,7 +45,7 @@ any of its member shapes. It's the Shape version of TypeScript's union.
 
 #### Defined in
 
-[src/Shapes.ts:142](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L142)
+[src/Shapes.ts:142](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L142)
 
 ## Properties
 
@@ -57,4 +57,4 @@ Contains the value of the `members` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:140](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L140)
+[src/Shapes.ts:140](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L140)

@@ -39,7 +39,7 @@ Shape representing JavaScript `number`.
 
 #### Defined in
 
-[src/Shapes.ts:53](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L53)
+[src/Shapes.ts:53](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L53)
 
 ## Properties
 
@@ -65,7 +65,7 @@ Contains the value of the `condition` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:50](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L50)
+[src/Shapes.ts:50](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L50)
 
 ___
 
@@ -77,7 +77,7 @@ Contains the value of the `integer` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:48](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L48)
+[src/Shapes.ts:48](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L48)
 
 ___
 
@@ -89,7 +89,7 @@ Contains the value of the `max` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:46](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L46)
+[src/Shapes.ts:46](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L46)
 
 ___
 
@@ -101,4 +101,4 @@ Contains the value of the `min` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:44](https://github.com/paulbarmstrong/shape-tape/blob/e455e38/src/Shapes.ts#L44)
+[src/Shapes.ts:44](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L44)
