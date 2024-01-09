@@ -62,22 +62,23 @@ export function validateDataShapeAux<T extends Shape>(data: any, shape: T, path:
 	} else if (shape instanceof ObjectShape) {
 		if (typeof data !== "object" || data === null) throw new ShapeValidationError({path: path, data: data, shape: shape})
 		Object.keys(data).forEach(k1 => {
-			if (!Object.keys(shape.object).find(k2 => k1 === k2)) {
+			if (!Object.keys(shape.propertyShapes).find(k2 => k1 === k2)) {
 				throw new ShapeValidationError({path: path, data: data, shape: shape})
 			}
 		})
-		Object.keys(shape.object).forEach(parameterKey => {
-			validateDataShapeAux(data[parameterKey], (shape.object)[parameterKey], [...path, parameterKey])
+		Object.keys(shape.propertyShapes).forEach(parameterKey => {
+			validateDataShapeAux(data[parameterKey], (shape.propertyShapes)[parameterKey], [...path, parameterKey])
 		})
+		if (shape.condition !== undefined && !shape.condition(data)) throw new ShapeValidationError({path: path, data: data, shape: shape})
 	} else if (shape instanceof ArrayShape) {
 		if (Array.isArray(data)) {
 			data.forEach((element, index) => validateDataShapeAux(element, shape.elementShape, [...path, index]))
-			if (shape.condition && !shape.condition(data)) throw new ShapeValidationError({path: path, data: data, shape: shape})
+			if (shape.condition !== undefined && !shape.condition(data)) throw new ShapeValidationError({path: path, data: data, shape: shape})
 		} else {
 			throw new ShapeValidationError({path: path, data: data, shape: shape})
 		}
 	} else if (shape instanceof UnionShape) {
-		const matchedMembers = (shape.members as Array<Shape>).filter(member => {
+		const matchedMembers = (shape.memberShapes as Array<Shape>).filter(member => {
 			try {
 				validateDataShapeAux(data, member, path)
 				return true

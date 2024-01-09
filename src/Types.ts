@@ -23,8 +23,8 @@ type ShapeToTypeAux<S extends Shape, Depth extends any[] = D0> =
 	S extends NumberShape ? number :
 	S extends BooleanShape ? boolean :
 	S extends LiteralShape<any> ? S["value"] :
-	S extends ObjectShape<any> ? { [K in keyof S["object"]]: ShapeToTypeAux<S["object"][K], IncrDepth<Depth>> } :
+	S extends ObjectShape<any> ? { [K in keyof S["propertyShapes"]]: ShapeToTypeAux<S["propertyShapes"][K], IncrDepth<Depth>> } :
 	S extends ArrayShape<any> ? Array<ShapeToTypeAux<S["elementShape"], IncrDepth<Depth>>> :
-	S extends UnionShape<any> ? ShapeToTypeAux<S["members"][number], IncrDepth<Depth>> :
+	S extends UnionShape<any> ? ShapeToTypeAux<S["memberShapes"][number], IncrDepth<Depth>> :
 	S extends ClassShape<any> ? InstanceType<S["clazz"]> :
 	never

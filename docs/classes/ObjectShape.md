@@ -19,13 +19,13 @@ Shape representing a regular JavaScript `object` having keys and values.
 ### Properties
 
 - [condition](ObjectShape.md#condition)
-- [object](ObjectShape.md#object)
+- [propertyShapes](ObjectShape.md#propertyshapes)
 
 ## Constructors
 
 ### constructor
 
-• **new ObjectShape**\<`T`\>(`object`, `options?`): [`ObjectShape`](ObjectShape.md)\<`T`\>
+• **new ObjectShape**\<`T`\>(`propertyShapes`, `options?`): [`ObjectShape`](ObjectShape.md)\<`T`\>
 
 #### Type parameters
 
@@ -37,9 +37,9 @@ Shape representing a regular JavaScript `object` having keys and values.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `object` | `T` | An object where the keys are the keys of the object the Shape should represent, and the values are the Shapes of the values the Shape should represent. |
+| `propertyShapes` | `T` | An object where the keys are the keys of the object the Shape should represent, and the values are the Shapes of the values the Shape should represent. |
 | `options?` | `Object` | Optional parameters for the Shape. |
-| `options.condition?` | (`data`: `T`) => `boolean` | Adds a customizable constraint. |
+| `options.condition?` | (`data`: \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> }) => `boolean` | Adds a customizable constraint. |
 
 #### Returns
 
@@ -53,7 +53,7 @@ Shape representing a regular JavaScript `object` having keys and values.
 
 ### condition
 
-• `Optional` `Readonly` **condition**: (`data`: `T`) => `boolean`
+• `Optional` `Readonly` **condition**: (`data`: \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> }) => `boolean`
 
 #### Type declaration
 
@@ -65,7 +65,7 @@ Contains the value of the `condition` constructor option.
 
 | Name | Type |
 | :------ | :------ |
-| `data` | `T` |
+| `data` | \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> } |
 
 ##### Returns
 
@@ -77,11 +77,11 @@ Contains the value of the `condition` constructor option.
 
 ___
 
-### object
+### propertyShapes
 
-• `Readonly` **object**: `T`
+• `Readonly` **propertyShapes**: `T`
 
-Contains the value of the `object` constructor parameter.
+Contains the value of the `propertyShapes` constructor parameter.
 
 #### Defined in
 

@@ -95,6 +95,24 @@ describe("validateDataShape", () => {
 		].forEach((invalidEntity: any) => {
 			expect(() => validateDataShape({ data: invalidEntity, shape: fruitSelectionShape })).toThrow(ShapeValidationError)
 		})
+		const weightsShape = s.object({
+			weight0: s.number(),
+			weight1: s.number()
+		}, { condition: obj => obj.weight0+obj.weight1 === 100 })
+		expect(() => validateDataShape({
+			data: {
+				weight0: 25,
+				weight1: 75
+			},
+			shape: weightsShape
+		})).not.toThrow()
+		expect(() => validateDataShape({
+			data: {
+				weight0: 25,
+				weight1: 50
+			},
+			shape: weightsShape
+		})).toThrow(ShapeValidationError)
 	})
 	test("array", () => {
 		;[[], ["apple", "banana"]].forEach(validEntity => {
@@ -110,6 +128,14 @@ describe("validateDataShape", () => {
 		expect(() => validateDataShape({
 			data: ["a", "b", "c"],
 			shape: s.array(s.string(), {condition: arr => arr.length < 3})
+		})).toThrow(ShapeValidationError)
+		expect(() => validateDataShape({
+			data: ["a", "b", "c"],
+			shape: s.array(s.string(), {condition: arr => !arr.includes("d")})
+		})).not.toThrow()
+		expect(() => validateDataShape({
+			data: ["a", "b", "c"],
+			shape: s.array(s.string(), {condition: arr => !arr.includes("b")})
 		})).toThrow(ShapeValidationError)
 	})
 	test("union", () => {

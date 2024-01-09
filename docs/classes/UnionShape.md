@@ -2,8 +2,8 @@
 
 # Class: UnionShape\<T\>
 
-Shape representing a union of Shapes. It represents a structure which is allowed to take the form of
-any of its member shapes. It's the Shape version of TypeScript's union.
+Shape representing a union of Shapes. It represents a structure which is allowed to 
+take the form of any of its member shapes. It's the Shape version of TypeScript's union.
 
 ## Type parameters
 
@@ -19,13 +19,13 @@ any of its member shapes. It's the Shape version of TypeScript's union.
 
 ### Properties
 
-- [members](UnionShape.md#members)
+- [memberShapes](UnionShape.md#membershapes)
 
 ## Constructors
 
 ### constructor
 
-• **new UnionShape**\<`T`\>(`members`): [`UnionShape`](UnionShape.md)\<`T`\>
+• **new UnionShape**\<`T`\>(`memberShapes`): [`UnionShape`](UnionShape.md)\<`T`\>
 
 #### Type parameters
 
@@ -37,7 +37,7 @@ any of its member shapes. It's the Shape version of TypeScript's union.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `members` | `T` | An array of the Shapes being unioned. |
+| `memberShapes` | `T` | An array of the Shapes being unioned. |
 
 #### Returns
 
@@ -45,16 +45,16 @@ any of its member shapes. It's the Shape version of TypeScript's union.
 
 #### Defined in
 
-[src/Shapes.ts:142](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L142)
+[src/Shapes.ts:143](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L143)
 
 ## Properties
 
-### members
+### memberShapes
 
-• `Readonly` **members**: `T`
+• `Readonly` **memberShapes**: `T`
 
-Contains the value of the `members` constructor parameter.
+Contains the value of the `memberShapes` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:140](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L140)
+[src/Shapes.ts:141](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L141)

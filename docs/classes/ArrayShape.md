@@ -39,7 +39,7 @@ Shape representing a JavaScript array
 | :------ | :------ | :------ |
 | `elementShape` | `T` | The Shape of the elements of the array. |
 | `options?` | `Object` | Optional parameters for the Shape. |
-| `options.condition?` | (`data`: `T`[]) => `boolean` | Adds a customizable constraint. |
+| `options.condition?` | (`data`: [`ShapeToType`](../index.md#shapetotype)\<`T`\>[]) => `boolean` | Adds a customizable constraint. |
 
 #### Returns
 
@@ -47,13 +47,13 @@ Shape representing a JavaScript array
 
 #### Defined in
 
-[src/Shapes.ts:125](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L125)
+[src/Shapes.ts:124](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L124)
 
 ## Properties
 
 ### condition
 
-• `Optional` `Readonly` **condition**: (`data`: `T`[]) => `boolean`
+• `Optional` `Readonly` **condition**: (`data`: [`ShapeToType`](../index.md#shapetotype)\<`T`\>[]) => `boolean`
 
 #### Type declaration
 
@@ -65,7 +65,7 @@ Contains the value of the `condition` constructor parameter.
 
 | Name | Type |
 | :------ | :------ |
-| `data` | `T`[] |
+| `data` | [`ShapeToType`](../index.md#shapetotype)\<`T`\>[] |
 
 ##### Returns
 

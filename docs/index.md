@@ -41,7 +41,7 @@ Type representing any Shape. It's a union of all Shape classes.
 
 #### Defined in
 
-[src/Shapes.ts:169](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L169)
+[src/Shapes.ts:170](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L170)
 
 ___
 
@@ -86,7 +86,7 @@ A collection of convenience functions for creating Shapes.
 
 #### Defined in
 
-[src/Shapes.ts:175](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L175)
+[src/Shapes.ts:174](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L174)
 
 ## Functions
 

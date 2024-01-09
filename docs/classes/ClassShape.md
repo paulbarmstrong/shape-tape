@@ -47,7 +47,7 @@ Shape representing a JavaScript class.
 
 #### Defined in
 
-[src/Shapes.ts:159](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L159)
+[src/Shapes.ts:160](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L160)
 
 ## Properties
 
@@ -59,7 +59,7 @@ Contains the value of the `clazz` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:152](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L152)
+[src/Shapes.ts:153](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L153)
 
 ___
 
@@ -85,4 +85,4 @@ Contains the value of the `clazz` constructor option.
 
 #### Defined in
 
-[src/Shapes.ts:154](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L154)
+[src/Shapes.ts:155](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L155)

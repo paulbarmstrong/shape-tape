@@ -1,4 +1,4 @@
-import { AnyClassConstructor } from "./Types"
+import { AnyClassConstructor, ShapeToType } from "./Types"
 import { getConstructFunction } from "./Utilities"
 
 /** Shape representing JavaScript `string`. */
@@ -91,20 +91,20 @@ export class LiteralShape<T extends string | number | boolean | null | undefined
 export class ObjectShape<T extends { [key: string]: Shape }> {
 	/** @hidden */
 	#classname = "ObjectShape"
-	/** Contains the value of the `object` constructor parameter. */
-	readonly object: T
+	/** Contains the value of the `propertyShapes` constructor parameter. */
+	readonly propertyShapes: T
 	/** Contains the value of the `condition` constructor option. */
-	readonly condition?: (data: T) => boolean
+	readonly condition?: (data: { [K in keyof T]: ShapeToType<T[K]> }) => boolean
 	/** 
-	 * @param object An object where the keys are the keys of the object the Shape should 
+	 * @param propertyShapes An object where the keys are the keys of the object the Shape should 
 	 * represent, and the values are the Shapes of the values the Shape should represent.
 	 * @param options Optional parameters for the Shape.
 	 */
-	constructor(object: T, options?: {
+	constructor(propertyShapes: T, options?: {
 		/** Adds a customizable constraint. */
-		condition?: (data: T) => boolean
+		condition?: (data: { [K in keyof T]: ShapeToType<T[K]> }) => boolean
 	}) {
-		this.object = object,
+		this.propertyShapes = propertyShapes,
 		this.condition = options?.condition
 	}
 }
@@ -116,31 +116,32 @@ export class ArrayShape<T extends Shape> {
 	/** Contains the value of the `elementShape` constructor parameter. */
 	readonly elementShape: T
 	/** Contains the value of the `condition` constructor parameter. */
-	readonly condition?: (data: Array<T>) => boolean
-	
+	readonly condition?: (data: Array<ShapeToType<T>>) => boolean
 	/** 
 	 * @param elementShape The Shape of the elements of the array.
 	 * @param options Optional parameters for the Shape.
 	 */
 	constructor(elementShape: T, options?: {
 		/** Adds a customizable constraint. */
-		condition?: (data: Array<T>) => boolean
+		condition?: (data: Array<ShapeToType<T>>) => boolean
 	}) {
 		this.elementShape = elementShape
 		this.condition = options?.condition
 	}
 }
 
-/** Shape representing a union of Shapes. It represents a structure which is allowed to take the form of
- * any of its member shapes. It's the Shape version of TypeScript's union. */
+/** 
+ * Shape representing a union of Shapes. It represents a structure which is allowed to 
+ * take the form of any of its member shapes. It's the Shape version of TypeScript's union. 
+ */
 export class UnionShape<T extends Array<Shape>> {
 	/** @hidden */
 	#classname = "UnionShape"
-	/** Contains the value of the `members` constructor parameter. */
-	readonly members: T
-	/** @param members An array of the Shapes being unioned. */
-	constructor(members: T) {
-		this.members = members
+	/** Contains the value of the `memberShapes` constructor parameter. */
+	readonly memberShapes: T
+	/** @param memberShapes An array of the Shapes being unioned. */
+	constructor(memberShapes: T) {
+		this.memberShapes = memberShapes
 	}
 }
 
@@ -169,9 +170,7 @@ export class ClassShape<T extends AnyClassConstructor> {
 export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape<any> | ObjectShape<any> | ArrayShape<any>
 	| UnionShape<any> | ClassShape<any>
 
-/**
- * A collection of convenience functions for creating Shapes.
- */
+/** A collection of convenience functions for creating Shapes. */
 export const s = {
 	/** Alias for the `StringShape` constructor. */
 	string: getConstructFunction(StringShape),
