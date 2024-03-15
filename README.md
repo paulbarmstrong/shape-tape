@@ -1,8 +1,5 @@
 ## shape-tape
 
-### Notice
-Please note this package is brand new and highly experimental so breaking changes may be made without notice.
-
 ### About
 
 A TypeScript/JavaScript library to help with runtime validation of structured data.

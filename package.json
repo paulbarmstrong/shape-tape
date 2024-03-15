@@ -1,6 +1,6 @@
 {
 	"name": "shape-tape",
-	"version": "1.0.18",
+	"version": "1.0.19",
 	"main": "dist/src/index",
 	"typings": "dist/src/index",
 	"scripts": {
@@ -23,6 +23,6 @@
 		"typedoc-plugin-markdown": "^3.17.1"
 	},
 	"keywords": [
-		"experimental"
+		"types", "validation", "typescript", "javascript"
 	]
 }
