@@ -107,6 +107,7 @@ Validates that the given data matches the given Shape.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `params` | `Object` | - |
+| `params.allowExtraProperties?` | `boolean` | Optionally allow properties on objects in the data that aren't defined by the Shape. |
 | `params.data` | `any` | Data to be validated. |
 | `params.shape` | `T` | Shape to validate the data against. |
 | `params.shapeValidationErrorOverride?` | (`err`: [`ShapeValidationError`](classes/ShapeValidationError.md)) => `Error` | Optional function for overriding the Error thrown in the case of a shape validation error |
