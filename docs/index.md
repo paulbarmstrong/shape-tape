@@ -41,7 +41,7 @@ Type representing any Shape. It's a union of all Shape classes.
 
 #### Defined in
 
-[src/Shapes.ts:170](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L170)
+[src/Shapes.ts:175](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L175)
 
 ___
 
@@ -86,7 +86,7 @@ A collection of convenience functions for creating Shapes.
 
 #### Defined in
 
-[src/Shapes.ts:174](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L174)
+[src/Shapes.ts:179](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L179)
 
 ## Functions
 
@@ -107,7 +107,6 @@ Validates that the given data matches the given Shape.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `params` | `Object` | - |
-| `params.allowExtraProperties?` | `boolean` | Optionally allow properties on objects in the data that aren't defined by the Shape. |
 | `params.data` | `any` | Data to be validated. |
 | `params.shape` | `T` | Shape to validate the data against. |
 | `params.shapeValidationErrorOverride?` | (`err`: [`ShapeValidationError`](classes/ShapeValidationError.md)) => `Error` | Optional function for overriding the Error thrown in the case of a shape validation error |

@@ -95,6 +95,8 @@ export class ObjectShape<T extends { [key: string]: Shape }> {
 	readonly propertyShapes: T
 	/** Contains the value of the `condition` constructor option. */
 	readonly condition?: (data: { [K in keyof T]: ShapeToType<T[K]> }) => boolean
+	/** Contains the value of the `allowExtraProperties` constructor option. */
+	readonly allowExtraProperties?: boolean
 	/** 
 	 * @param propertyShapes An object where the keys are the keys of the object the Shape should 
 	 * represent, and the values are the Shapes of the values the Shape should represent.
@@ -102,10 +104,13 @@ export class ObjectShape<T extends { [key: string]: Shape }> {
 	 */
 	constructor(propertyShapes: T, options?: {
 		/** Adds a customizable constraint. */
-		condition?: (data: { [K in keyof T]: ShapeToType<T[K]> }) => boolean
+		condition?: (data: { [K in keyof T]: ShapeToType<T[K]> }) => boolean,
+		/** Optionally allow properties that aren't defined in propertyShapes. */
+		allowExtraProperties?: boolean
 	}) {
 		this.propertyShapes = propertyShapes,
 		this.condition = options?.condition
+		this.allowExtraProperties = options?.allowExtraProperties
 	}
 }
 

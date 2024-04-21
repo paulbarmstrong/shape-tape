@@ -47,7 +47,7 @@ Shape representing a JavaScript array
 
 #### Defined in
 
-[src/Shapes.ts:124](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L124)
+[src/Shapes.ts:129](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L129)
 
 ## Properties
 
@@ -73,7 +73,7 @@ Contains the value of the `condition` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:119](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L119)
+[src/Shapes.ts:124](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L124)
 
 ___
 
@@ -85,4 +85,4 @@ Contains the value of the `elementShape` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:117](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L117)
+[src/Shapes.ts:122](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L122)

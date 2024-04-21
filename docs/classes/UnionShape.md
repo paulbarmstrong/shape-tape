@@ -45,7 +45,7 @@ take the form of any of its member shapes. It's the Shape version of TypeScript'
 
 #### Defined in
 
-[src/Shapes.ts:143](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L143)
+[src/Shapes.ts:148](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L148)
 
 ## Properties
 
@@ -57,4 +57,4 @@ Contains the value of the `memberShapes` constructor parameter.
 
 #### Defined in
 
-[src/Shapes.ts:141](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L141)
+[src/Shapes.ts:146](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L146)

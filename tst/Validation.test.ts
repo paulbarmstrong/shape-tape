@@ -119,13 +119,11 @@ describe("validateDataShape", () => {
 		})).toThrow(ShapeValidationError)
 		expect(() => validateDataShape({
 			data: { id: "1", text: "hello" },
-			shape: s.object({ id: s.string() }),
-			allowExtraProperties: true
+			shape: s.object({ id: s.string() }, { allowExtraProperties: true }),
 		})).not.toThrow()
 		expect(() => validateDataShape({
 			data: { id: 0, text: "hello" },
-			shape: s.object({ id: s.string() }),
-			allowExtraProperties: true
+			shape: s.object({ id: s.string() }, { allowExtraProperties: true }),
 		})).toThrow(ShapeValidationError)
 	})
 	test("array", () => {

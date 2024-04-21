@@ -18,6 +18,7 @@ Shape representing a regular JavaScript `object` having keys and values.
 
 ### Properties
 
+- [allowExtraProperties](ObjectShape.md#allowextraproperties)
 - [condition](ObjectShape.md#condition)
 - [propertyShapes](ObjectShape.md#propertyshapes)
 
@@ -39,6 +40,7 @@ Shape representing a regular JavaScript `object` having keys and values.
 | :------ | :------ | :------ |
 | `propertyShapes` | `T` | An object where the keys are the keys of the object the Shape should represent, and the values are the Shapes of the values the Shape should represent. |
 | `options?` | `Object` | Optional parameters for the Shape. |
+| `options.allowExtraProperties?` | `boolean` | Optionally allow properties that aren't defined in propertyShapes. |
 | `options.condition?` | (`data`: \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> }) => `boolean` | Adds a customizable constraint. |
 
 #### Returns
@@ -47,9 +49,21 @@ Shape representing a regular JavaScript `object` having keys and values.
 
 #### Defined in
 
-[src/Shapes.ts:103](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L103)
+[src/Shapes.ts:105](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L105)
 
 ## Properties
+
+### allowExtraProperties
+
+• `Optional` `Readonly` **allowExtraProperties**: `boolean`
+
+Contains the value of the `allowExtraProperties` constructor option.
+
+#### Defined in
+
+[src/Shapes.ts:99](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Shapes.ts#L99)
+
+___
 
 ### condition
 
