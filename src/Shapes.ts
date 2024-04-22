@@ -1,4 +1,4 @@
-import { AnyClassConstructor, ShapeToType } from "./Types"
+import { AnyClassConstructor, DefinitelyTrue, ShapeToType } from "./Types"
 import { getConstructFunction } from "./Utilities"
 
 /** Shape representing JavaScript `string`. */
@@ -88,15 +88,15 @@ export class LiteralShape<T extends string | number | boolean | null | undefined
 }
 
 /** Shape representing a regular JavaScript `object` having keys and values. */
-export class ObjectShape<T extends { [key: string]: Shape }> {
+export class ObjectShape<T extends { [key: string]: Shape }, AEP extends boolean = false> {
 	/** @hidden */
 	#classname = "ObjectShape"
 	/** Contains the value of the `propertyShapes` constructor parameter. */
 	readonly propertyShapes: T
 	/** Contains the value of the `condition` constructor option. */
-	readonly condition?: (data: { [K in keyof T]: ShapeToType<T[K]> }) => boolean
+	readonly condition?: (data: { [K in keyof T]: ShapeToType<T[K]> } & (DefinitelyTrue<AEP> extends true ? Record<string, any> : {})) => boolean
 	/** Contains the value of the `allowExtraProperties` constructor option. */
-	readonly allowExtraProperties?: boolean
+	readonly allowExtraProperties?: AEP
 	/** 
 	 * @param propertyShapes An object where the keys are the keys of the object the Shape should 
 	 * represent, and the values are the Shapes of the values the Shape should represent.
@@ -104,9 +104,9 @@ export class ObjectShape<T extends { [key: string]: Shape }> {
 	 */
 	constructor(propertyShapes: T, options?: {
 		/** Adds a customizable constraint. */
-		condition?: (data: { [K in keyof T]: ShapeToType<T[K]> }) => boolean,
+		condition?: (data: { [K in keyof T]: ShapeToType<T[K]> } & (DefinitelyTrue<AEP> extends true ? Record<string, any> : {})) => boolean,
 		/** Optionally allow properties that aren't defined in propertyShapes. */
-		allowExtraProperties?: boolean
+		allowExtraProperties?: AEP
 	}) {
 		this.propertyShapes = propertyShapes,
 		this.condition = options?.condition
@@ -172,7 +172,7 @@ export class ClassShape<T extends AnyClassConstructor> {
 }
 
 /** Type representing any Shape. It's a union of all Shape classes. */
-export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape<any> | ObjectShape<any> | ArrayShape<any>
+export type Shape = StringShape | NumberShape | BooleanShape | LiteralShape<any> | ObjectShape<any,any> | ArrayShape<any>
 	| UnionShape<any> | ClassShape<any>
 
 /** A collection of convenience functions for creating Shapes. */

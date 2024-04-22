@@ -35,7 +35,7 @@ This is low level documentation. Please see [README.md](../README.md) for the hi
 
 ### Shape
 
-Ƭ **Shape**: [`StringShape`](classes/StringShape.md) \| [`NumberShape`](classes/NumberShape.md) \| [`BooleanShape`](classes/BooleanShape.md) \| [`LiteralShape`](classes/LiteralShape.md)\<`any`\> \| [`ObjectShape`](classes/ObjectShape.md)\<`any`\> \| [`ArrayShape`](classes/ArrayShape.md)\<`any`\> \| [`UnionShape`](classes/UnionShape.md)\<`any`\> \| [`ClassShape`](classes/ClassShape.md)\<`any`\>
+Ƭ **Shape**: [`StringShape`](classes/StringShape.md) \| [`NumberShape`](classes/NumberShape.md) \| [`BooleanShape`](classes/BooleanShape.md) \| [`LiteralShape`](classes/LiteralShape.md)\<`any`\> \| [`ObjectShape`](classes/ObjectShape.md)\<`any`, `any`\> \| [`ArrayShape`](classes/ArrayShape.md)\<`any`\> \| [`UnionShape`](classes/UnionShape.md)\<`any`\> \| [`ClassShape`](classes/ClassShape.md)\<`any`\>
 
 Type representing any Shape. It's a union of all Shape classes.
 

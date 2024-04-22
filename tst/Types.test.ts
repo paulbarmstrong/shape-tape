@@ -1,4 +1,5 @@
-import { ShapeToType, s } from "../src"
+import { ObjectShape, ShapeToType, StringShape, s } from "../src"
+import { DefinitelyTrue } from "../src/Types"
 
 type AssertEqual<A, B> = [A] extends [never] ? (
 	[B] extends [never] ? true : false
@@ -60,6 +61,14 @@ describe("ShapeToType", () => {
 				children: Array<string>
 			}> = true
 		})
+		test("with allowExtraProperties", () => {
+			const shape = s.object({
+				id: s.string()
+			}, { allowExtraProperties: true })
+			const assertion: AssertEqual<ShapeToType<typeof shape>, {
+				id: string;
+			} & Record<string, any>> = true
+		})
 	})
 	describe("ArrayShape", () => {
 		test("string", () => {
@@ -96,4 +105,13 @@ describe("ShapeToType", () => {
 			const assertion: AssertEqual<ShapeToType<typeof shape>, MyClass> = true
 		})
 	})
+})
+
+describe("DefinitelyTrue", () => {
+	const assertion0: AssertEqual<DefinitelyTrue<true>, true> = true
+	const assertion1: AssertEqual<DefinitelyTrue<false>, false> = true
+	const assertion2: AssertEqual<DefinitelyTrue<true | undefined>, true> = true
+	const assertion3: AssertEqual<DefinitelyTrue<false | undefined>, false> = true
+	const assertion4: AssertEqual<DefinitelyTrue<undefined>, false> = true
+	const assertion5: AssertEqual<DefinitelyTrue<boolean>, never> = true
 })

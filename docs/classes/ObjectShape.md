@@ -1,6 +1,6 @@
 [shape-tape](../index.md) / ObjectShape
 
-# Class: ObjectShape\<T\>
+# Class: ObjectShape\<T, AEP\>
 
 Shape representing a regular JavaScript `object` having keys and values.
 
@@ -9,6 +9,7 @@ Shape representing a regular JavaScript `object` having keys and values.
 | Name | Type |
 | :------ | :------ |
 | `T` | extends `Object` |
+| `AEP` | extends `boolean` = ``false`` |
 
 ## Table of contents
 
@@ -26,13 +27,14 @@ Shape representing a regular JavaScript `object` having keys and values.
 
 ### constructor
 
-• **new ObjectShape**\<`T`\>(`propertyShapes`, `options?`): [`ObjectShape`](ObjectShape.md)\<`T`\>
+• **new ObjectShape**\<`T`, `AEP`\>(`propertyShapes`, `options?`): [`ObjectShape`](ObjectShape.md)\<`T`, `AEP`\>
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
 | `T` | extends `Object` |
+| `AEP` | extends `boolean` = ``false`` |
 
 #### Parameters
 
@@ -40,12 +42,12 @@ Shape representing a regular JavaScript `object` having keys and values.
 | :------ | :------ | :------ |
 | `propertyShapes` | `T` | An object where the keys are the keys of the object the Shape should represent, and the values are the Shapes of the values the Shape should represent. |
 | `options?` | `Object` | Optional parameters for the Shape. |
-| `options.allowExtraProperties?` | `boolean` | Optionally allow properties that aren't defined in propertyShapes. |
-| `options.condition?` | (`data`: \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> }) => `boolean` | Adds a customizable constraint. |
+| `options.allowExtraProperties?` | `AEP` | Optionally allow properties that aren't defined in propertyShapes. |
+| `options.condition?` | (`data`: \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> } & `DefinitelyTrue`\<`AEP`\> extends ``true`` ? `Record`\<`string`, `any`\> : {}) => `boolean` | Adds a customizable constraint. |
 
 #### Returns
 
-[`ObjectShape`](ObjectShape.md)\<`T`\>
+[`ObjectShape`](ObjectShape.md)\<`T`, `AEP`\>
 
 #### Defined in
 
@@ -55,7 +57,7 @@ Shape representing a regular JavaScript `object` having keys and values.
 
 ### allowExtraProperties
 
-• `Optional` `Readonly` **allowExtraProperties**: `boolean`
+• `Optional` `Readonly` **allowExtraProperties**: `AEP`
 
 Contains the value of the `allowExtraProperties` constructor option.
 
@@ -67,7 +69,7 @@ ___
 
 ### condition
 
-• `Optional` `Readonly` **condition**: (`data`: \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> }) => `boolean`
+• `Optional` `Readonly` **condition**: (`data`: \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> } & `DefinitelyTrue`\<`AEP`\> extends ``true`` ? `Record`\<`string`, `any`\> : {}) => `boolean`
 
 #### Type declaration
 
@@ -79,7 +81,7 @@ Contains the value of the `condition` constructor option.
 
 | Name | Type |
 | :------ | :------ |
-| `data` | \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> } |
+| `data` | \{ [K in string \| number \| symbol]: ShapeToType\<T[K]\> } & `DefinitelyTrue`\<`AEP`\> extends ``true`` ? `Record`\<`string`, `any`\> : {} |
 
 ##### Returns
 
