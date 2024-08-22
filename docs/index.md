@@ -59,7 +59,7 @@ Utility type for converting Shapes to the static types they represent.
 
 #### Defined in
 
-[src/Types.ts:18](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Types.ts#L18)
+[src/Types.ts:17](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Types.ts#L17)
 
 ## Variables
 
