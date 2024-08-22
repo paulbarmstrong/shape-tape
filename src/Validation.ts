@@ -75,7 +75,7 @@ export function validateDataShapeAux<T extends Shape>(data: any, shape: T, path:
 	} else if (shape instanceof ArrayShape) {
 		if (Array.isArray(data)) {
 			data.forEach((element, index) => validateDataShapeAux(element, shape.elementShape, [...path, index]))
-			if (shape.condition !== undefined && !shape.condition(data)) throw new ShapeValidationError({path: path, data: data, shape: shape})
+			if (shape.condition !== undefined && !(shape as any).condition(data)) throw new ShapeValidationError({path: path, data: data, shape: shape})
 		} else {
 			throw new ShapeValidationError({path: path, data: data, shape: shape})
 		}

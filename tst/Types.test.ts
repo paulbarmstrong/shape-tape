@@ -1,4 +1,4 @@
-import { ObjectShape, ShapeToType, StringShape, s } from "../src"
+import { ShapeToType, s } from "../src"
 import { DefinitelyTrue } from "../src/Types"
 
 type AssertEqual<A, B> = [A] extends [never] ? (

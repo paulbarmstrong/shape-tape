@@ -47,7 +47,7 @@ ___
 
 ### ShapeToType
 
-Ƭ **ShapeToType**\<`S`\>: `ShapeToTypeAux`\<`S`\>
+Ƭ **ShapeToType**\<`S`\>: `S` extends [`StringShape`](classes/StringShape.md) ? `string` : `S` extends [`NumberShape`](classes/NumberShape.md) ? `number` : `S` extends [`BooleanShape`](classes/BooleanShape.md) ? `boolean` : `S` extends [`LiteralShape`](classes/LiteralShape.md)\<`any`\> ? `S`[``"value"``] : `S` extends [`ObjectShape`](classes/ObjectShape.md)\<`any`, `any`\> ? \{ [K in keyof S["propertyShapes"]]: ShapeToType\<S["propertyShapes"][K]\> } & `DefinitelyTrue`\<`S`[``"allowExtraProperties"``]\> extends ``true`` ? `Record`\<`string`, `any`\> : {} : `S` extends [`ArrayShape`](classes/ArrayShape.md)\<`any`\> ? [`ShapeToType`](index.md#shapetotype)\<`S`[``"elementShape"``]\>[] : `S` extends [`UnionShape`](classes/UnionShape.md)\<`any`\> ? [`ShapeToType`](index.md#shapetotype)\<`S`[``"memberShapes"``][`number`]\> : `S` extends [`ClassShape`](classes/ClassShape.md)\<`any`\> ? `InstanceType`\<`S`[``"clazz"``]\> : `never`
 
 Utility type for converting Shapes to the static types they represent.
 
@@ -59,7 +59,7 @@ Utility type for converting Shapes to the static types they represent.
 
 #### Defined in
 
-[src/Types.ts:18](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Types.ts#L18)
+[src/Types.ts:7](https://github.com/paulbarmstrong/shape-tape/blob/main/src/Types.ts#L7)
 
 ## Variables
 
