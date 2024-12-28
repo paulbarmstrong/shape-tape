@@ -1,5 +1,9 @@
 ## shape-tape
 
+### Deprecation
+
+This package is deprecated in favor of [zod](https://www.npmjs.com/package/zod).
+
 ### About
 
 A TypeScript/JavaScript library to help with runtime validation of structured data.
