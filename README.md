@@ -2,20 +2,13 @@
 
 ### Deprecation
 
-This package is deprecated in favor of [zod](https://www.npmjs.com/package/zod).
+This package is not maintained. It's deprecated in favor of [zod](https://www.npmjs.com/package/zod).
 
 ### About
 
-A TypeScript/JavaScript library to help with runtime validation of structured data.
+A TypeScript/JavaScript library to help with runtime validation of structured data. Consumers define Shapes that represent the structure of their data. Consumers call `validateDataShape` to validate some data matches their Shape.
 
-Consumers define Shapes that represent the structure of their data. Consumers call `validateDataShape` to validate some data matches their Shape.
-
-### Installation
-```
-npm install shape-tape
-```
-
-### Usage
+### Example
 
 ```javascript
 import { s, validateObjectShape } from "shape-tape"
